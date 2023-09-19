@@ -4,7 +4,7 @@ export const typesense = new Typesense.Client({
   nodes: [
     {
       host: "localhost",
-      port: 8108,
+      port: 8118,
       protocol: "http",
     },
   ],
