@@ -1,16 +1,26 @@
 {
+  "type": "module",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/bot.js",
-    "dev": "tsx bot.ts"
+    "lint": "tsc",
+    "start": "tsx bot.ts",
+    "dev": "tsx --watch bot.ts",
+    "db:push": "drizzle-kit push:sqlite",
+    "db:studio": "pnpm drizzle-kit studio --port 3000 --verbose"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.5",
     "@types/node": "^20.6.2",
+    "drizzle-kit": "^0.19.13",
     "tsx": "^3.12.10",
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@grammyjs/conversations": "^1.1.2",
+    "@grammyjs/menu": "^1.2.1",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "better-sqlite3": "^8.6.0",
     "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.28.6",
     "grammy": "^1.18.1"
   }
 }
