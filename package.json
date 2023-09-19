@@ -21,6 +21,7 @@
     "better-sqlite3": "^8.6.0",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
-    "grammy": "^1.18.1"
+    "grammy": "^1.18.1",
+    "typesense": "^1.7.1"
   }
 }
