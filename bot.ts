@@ -7,14 +7,20 @@ import {
   conversations,
   createConversation,
 } from "@grammyjs/conversations";
-import { addTask, createUser, getPendingTasksCount } from "@/api";
+import {
+  addTask,
+  createUser,
+  getPostedTasksCount,
+  getTaskerProfile,
+  updateProfile,
+} from "@/api";
 
 type MyContext = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContext>;
 
 export const bot = new Bot<MyContext>(process.env.BOT_TOKEN!);
 
-async function addNewTaskConversation(
+async function customerAddNewTaskConversation(
   conversation: MyConversation,
   ctx: MyContext
 ) {
@@ -43,6 +49,71 @@ async function addNewTaskConversation(
   await ctx.reply("Task added successfully!");
 }
 
+async function taskerOnboardingConversation(
+  conversation: MyConversation,
+  ctx: MyContext
+) {
+  if (!ctx.from?.id) {
+    throw new Error("No user ID found");
+  }
+
+  await ctx.reply(
+    "Let's get started! In order to start receiving tasks you need to fill in your profile information. Please provide exact and full information about the services you provide."
+  );
+  let { message: profileMessage } = await conversation.wait();
+
+  if (!profileMessage) {
+    throw new Error("No message found");
+  }
+
+  const profile = profileMessage.text;
+
+  if (!profile) {
+    throw new Error("No description found");
+  }
+
+  await updateProfile({
+    taskerId: ctx.from.id,
+    profile,
+  });
+
+  await ctx.reply(
+    "Profile successfully updated! You can now start receiving tasks. When a customer posts a task that matches your qualification, you will receive a notification with task details and customer's contact info. You can then contact the customer and agree on the details of the task. Once the task is completed, you can mark it as finished and receive payment."
+  );
+}
+
+async function taskerEditProfileConversation(
+  conversation: MyConversation,
+  ctx: MyContext
+) {
+  if (!ctx.from?.id) {
+    throw new Error("No user ID found");
+  }
+
+  await ctx.reply(
+    "Enter your new profile information. Please provide exact and full information about the services you provide."
+  );
+
+  let { message: profileMessage } = await conversation.wait();
+
+  if (!profileMessage) {
+    throw new Error("No message found");
+  }
+
+  const profile = profileMessage.text;
+
+  if (!profile) {
+    throw new Error("No description found");
+  }
+
+  await updateProfile({
+    taskerId: ctx.from.id,
+    profile,
+  });
+
+  await ctx.reply("Profile successfully updated!");
+}
+
 await bot.api.setMyCommands([
   {
     command: "start",
@@ -58,8 +129,27 @@ await bot.api.setMyCommands([
   },
 ]);
 
+const manageProfileMenu = new Menu<MyContext>("manage-profile-menu")
+  .text("✏️ Edit profile", async (ctx) => {
+    return await ctx.conversation.enter(taskerEditProfileConversation.name);
+  })
+  .row();
+
 const taskerMenu = new Menu<MyContext>("tasker-menu")
-  .text("👤 Manage profile", (ctx) => ctx.reply("You pressed A!"))
+  .text("👤 Manage profile", async (ctx) => {
+    if (!ctx.from?.id) {
+      throw new Error("No user ID found");
+    }
+
+    const profile = await getTaskerProfile(ctx.from.id);
+
+    if (!profile) {
+      throw new Error("No profile found");
+    }
+
+    await ctx.reply("Your profile");
+    return await ctx.reply(profile, { reply_markup: manageProfileMenu });
+  })
   .row()
   .text("🔎 Discover tasks", (ctx) => ctx.reply("You pressed B!"))
   .row()
@@ -76,7 +166,7 @@ const taskerMenu = new Menu<MyContext>("tasker-menu")
 
 const customerMenu = new Menu<MyContext>("customer-menu")
   .text("✨ Add a new task", (ctx) =>
-    ctx.conversation.enter(addNewTaskConversation.name)
+    ctx.conversation.enter(customerAddNewTaskConversation.name)
   )
   .row()
   .text(
@@ -85,9 +175,16 @@ const customerMenu = new Menu<MyContext>("customer-menu")
         throw new Error("No user ID found");
       }
 
-      const pendingTasksCount = await getPendingTasksCount(ctx.from.id);
+      const pendingTasksCount = await getPostedTasksCount(ctx.from.id);
 
-      return `🤙 Manage pending tasks (${pendingTasksCount})`;
+      return `🤙 Manage posted tasks (${pendingTasksCount})`;
+    },
+    (ctx) => ctx.reply("You pressed B!")
+  )
+  .row()
+  .text(
+    async (ctx) => {
+      return `❓ Manage tasks waiting for approval`;
     },
     (ctx) => ctx.reply("You pressed B!")
   )
@@ -97,8 +194,6 @@ const customerMenu = new Menu<MyContext>("customer-menu")
   .text("⌛ View tasks history", (ctx) => ctx.reply("You pressed B!"))
   .row()
   .text("⚙️ Manage settings", (ctx) => ctx.reply("You pressed B!"))
-  .row()
-  .text("💸 Manage payments", (ctx) => ctx.reply("You pressed B!"))
   .row()
   .text("🫶 Contact support", (ctx) => ctx.reply("You pressed B!"))
   .row();
@@ -112,8 +207,11 @@ bot.use(
 );
 
 bot.use(conversations());
-bot.use(createConversation(addNewTaskConversation));
+bot.use(createConversation(customerAddNewTaskConversation));
+bot.use(createConversation(taskerOnboardingConversation));
+bot.use(createConversation(taskerEditProfileConversation));
 
+bot.use(manageProfileMenu);
 bot.use(taskerMenu);
 bot.use(customerMenu);
 
@@ -130,6 +228,16 @@ bot.command("start", async (ctx) => {
 });
 
 bot.command("tasker_menu", async (ctx) => {
+  if (!ctx.from?.id) {
+    throw new Error("No user ID found");
+  }
+
+  const profile = await getTaskerProfile(ctx.from.id);
+
+  if (!profile) {
+    return await ctx.conversation.enter(taskerOnboardingConversation.name);
+  }
+
   return await ctx.reply("Tasker menu", {
     reply_markup: taskerMenu,
   });

@@ -12,6 +12,7 @@ export const customersRelations = relations(customers, ({ many }) => ({
 
 export const taskers = sqliteTable("taskers", {
   id: int("id").primaryKey().notNull().unique(),
+  profile: text("profile"),
 });
 
 export const tasks = sqliteTable("tasks", {
@@ -21,10 +22,10 @@ export const tasks = sqliteTable("tasks", {
   customerId: int("customer_id").notNull(),
   description: text("description").notNull(),
   status: text("status", {
-    enum: ["pending", "scheduled", "completed"],
+    enum: ["posted", "waiting", "scheduled", "finished"],
   })
     .notNull()
-    .default("pending"),
+    .default("posted"),
 });
 
 export const tasksRelations = relations(tasks, ({ one }) => ({
