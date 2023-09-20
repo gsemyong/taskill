@@ -13,8 +13,7 @@ export const tasksSchema: CollectionCreateSchema = {
       embed: {
         from: ["description"],
         model_config: {
-          model_name: "openai/text-embedding-ada-002",
-          api_key: process.env.OPENAI_API_KEY,
+          model_name: "ts/all-MiniLM-L12-v2",
         },
       },
     },
@@ -32,10 +31,9 @@ export const taskersSchema: CollectionCreateSchema = {
       name: "embedding",
       type: "float[]",
       embed: {
-        from: ["description"],
+        from: ["profile"],
         model_config: {
-          model_name: "openai/text-embedding-ada-002",
-          api_key: process.env.OPENAI_API_KEY,
+          model_name: "ts/all-MiniLM-L12-v2",
         },
       },
     },

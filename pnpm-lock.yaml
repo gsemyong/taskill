@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@babel/runtime':
+    specifier: ^7.22.15
+    version: 7.22.15
   '@grammyjs/conversations':
     specifier: ^1.1.2
     version: 1.1.2(grammy@1.18.1)

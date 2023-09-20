@@ -5,7 +5,9 @@
     "start": "tsx bot.ts",
     "dev": "tsx --watch bot.ts",
     "db:push": "drizzle-kit push:sqlite",
-    "db:studio": "pnpm drizzle-kit studio --port 3000 --verbose"
+    "db:studio": "pnpm drizzle-kit studio --port 3000 --verbose",
+    "typesense:init": "tsx typesense/scripts/init.ts",
+    "typesense:reset": "tsx typesense/scripts/reset.ts"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.5",
@@ -15,6 +17,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@babel/runtime": "^7.22.15",
     "@grammyjs/conversations": "^1.1.2",
     "@grammyjs/menu": "^1.2.1",
     "@paralleldrive/cuid2": "^2.2.2",
