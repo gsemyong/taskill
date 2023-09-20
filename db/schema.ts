@@ -2,18 +2,16 @@ import { sqliteTable, text, int } from "drizzle-orm/sqlite-core";
 import { createId } from "@paralleldrive/cuid2";
 import { relations } from "drizzle-orm";
 
-export const customers = sqliteTable("customers", {
+export const users = sqliteTable("users", {
   id: int("id").primaryKey().notNull().unique(),
+  chatId: int("chat_id").notNull().unique(),
+  taskerProfile: text("tasker_profile"),
 });
 
-export const customersRelations = relations(customers, ({ many }) => ({
-  tasks: many(tasks),
+export const usersRelations = relations(users, ({ many }) => ({
+  customerTasks: many(tasks),
+  taskerTasks: many(tasks),
 }));
-
-export const taskers = sqliteTable("taskers", {
-  id: int("id").primaryKey().notNull().unique(),
-  profile: text("profile"),
-});
 
 export const tasks = sqliteTable("tasks", {
   id: text("id")
@@ -29,8 +27,8 @@ export const tasks = sqliteTable("tasks", {
 });
 
 export const tasksRelations = relations(tasks, ({ one }) => ({
-  customer: one(customers, {
+  customer: one(users, {
     fields: [tasks.customerId],
-    references: [customers.id],
+    references: [users.id],
   }),
 }));

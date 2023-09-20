@@ -12,6 +12,8 @@ import {
   createUser,
   getPostedTasksCount,
   getTaskerProfile,
+  searchTaskers,
+  searchTasks,
   updateProfile,
 } from "@/api";
 
@@ -46,6 +48,8 @@ async function customerAddNewTaskConversation(
     description,
   });
 
+  const taskers = await searchTaskers(description);
+
   await ctx.reply("Task added successfully!");
 }
 
@@ -73,7 +77,7 @@ async function taskerOnboardingConversation(
   }
 
   await updateProfile({
-    taskerId: ctx.from.id,
+    userId: ctx.from.id,
     profile,
   });
 
@@ -107,7 +111,7 @@ async function taskerEditProfileConversation(
   }
 
   await updateProfile({
-    taskerId: ctx.from.id,
+    userId: ctx.from.id,
     profile,
   });
 
@@ -151,7 +155,13 @@ const taskerMenu = new Menu<MyContext>("tasker-menu")
     return await ctx.reply(profile, { reply_markup: manageProfileMenu });
   })
   .row()
-  .text("🔎 Discover tasks", (ctx) => ctx.reply("You pressed B!"))
+  .text("🔎 Discover tasks", async (ctx) => {
+    if (!ctx.from?.id) {
+      throw new Error("No user ID found");
+    }
+
+    await searchTasks(ctx.from.id);
+  })
   .row()
   .text("📅 Manage scheduled tasks", (ctx) => ctx.reply("You pressed B!"))
   .row()
@@ -222,7 +232,10 @@ bot.command("start", async (ctx) => {
     throw new Error("No user ID found");
   }
 
-  await createUser(ctx.from.id);
+  await createUser({
+    id: ctx.from?.id,
+    chatId: ctx.chat.id,
+  });
 
   return await ctx.reply("Explore the menu to get started 🚀");
 });
