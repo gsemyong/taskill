@@ -17,11 +17,12 @@ import {
   searchTasks,
   updateProfile,
 } from "api";
+import { env } from "./env";
 
 type MyContext = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContext>;
 
-export const bot = new Bot<MyContext>(process.env.BOT_TOKEN!);
+export const bot = new Bot<MyContext>(env.BOT_TOKEN);
 
 async function customerAddNewTaskConversation(
   conversation: MyConversation,
