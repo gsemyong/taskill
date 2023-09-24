@@ -1,5 +1,6 @@
 {
   "name": "search-db",
+  "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
