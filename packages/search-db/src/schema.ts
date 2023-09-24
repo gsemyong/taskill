@@ -5,6 +5,18 @@ export const taskersSchema: CollectionCreateSchema = {
   name: "taskers",
   fields: [
     {
+      name: "user_id",
+      type: "int32",
+      optional: true,
+      index: false,
+    },
+    {
+      name: "chat_id",
+      type: "int32",
+      optional: true,
+      index: false,
+    },
+    {
       name: "profile",
       type: "string",
     },
@@ -21,17 +33,27 @@ export const taskersSchema: CollectionCreateSchema = {
   ],
 };
 
+export const taskerSchemaZod = z.object({
+  id: z.string(),
+  user_id: z.number(),
+  chat_id: z.number(),
+  profile: z.string(),
+});
+
+export type Tasker = z.infer<typeof taskerSchemaZod>;
+
 export const tasksSchema: CollectionCreateSchema = {
   name: "tasks",
   fields: [
     {
-      name: "description",
-      type: "string",
-    },
-    {
       name: "customer_id",
       type: "int32",
-      indexed: false,
+      optional: true,
+      index: false,
+    },
+    {
+      name: "description",
+      type: "string",
     },
     {
       name: "embedding",
@@ -46,14 +68,8 @@ export const tasksSchema: CollectionCreateSchema = {
   ],
 };
 
-export const taskerSchemaZod = z.object({
-  id: z.number(),
-  profile: z.string(),
-});
-
-export type Tasker = z.infer<typeof taskerSchemaZod>;
-
 export const taskSchemaZod = z.object({
+  id: z.string(),
   customer_id: z.number(),
   description: z.string(),
 });

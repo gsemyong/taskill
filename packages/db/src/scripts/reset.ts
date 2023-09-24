@@ -1,5 +1,5 @@
-import { db } from "@/db";
-import { tasks, users } from "@/db/schema";
+import { db } from "../index";
+import { tasks, users } from "../schema";
 
 await db.delete(users).returning();
 

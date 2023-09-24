@@ -1,0 +1,17 @@
+{
+  "name": "search-db",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "init": "tsx src/scripts/init.ts",
+    "reset": "tsx src/scripts/reset.ts",
+    "seed": "tsx src/scripts/seed.ts"
+  },
+  "dependencies": {
+    "typesense": "^1.7.1",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
+  }
+}

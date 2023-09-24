@@ -1,0 +1,14 @@
+{
+  "name": "api",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "db": "workspace:*",
+    "search-db": "workspace:*",
+    "drizzle-orm": "^0.28.6"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
+  }
+}

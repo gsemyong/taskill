@@ -1,0 +1,20 @@
+{
+  "name": "db",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "push": "drizzle-kit push:sqlite",
+    "reset": "tsx src/scripts/reset.ts",
+    "studio": "pnpm drizzle-kit studio --port 3000 --verbose"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
+    "better-sqlite3": "^8.6.0",
+    "drizzle-orm": "^0.28.6",
+    "tsconfig": "workspace:*"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.19.13"
+  }
+}

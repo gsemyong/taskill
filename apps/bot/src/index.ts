@@ -10,12 +10,13 @@ import {
 import {
   addTask,
   createUser,
+  getPostedTasks,
   getPostedTasksCount,
   getTaskerProfile,
   searchTaskers,
   searchTasks,
   updateProfile,
-} from "@/api";
+} from "api";
 
 type MyContext = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContext>;
@@ -49,6 +50,16 @@ async function customerAddNewTaskConversation(
   });
 
   const taskers = await searchTaskers(description);
+
+  for (const tasker of taskers) {
+    const { user } = await bot.api.getChatMember(tasker.chatId, tasker.userId);
+
+    await bot.api.sendMessage(tasker.chatId, "New task is available for you!");
+    await bot.api.sendMessage(
+      tasker.chatId,
+      `${description}\n\n@${user.username}`
+    );
+  }
 
   await ctx.reply("Task added successfully!");
 }
@@ -137,6 +148,8 @@ const manageProfileMenu = new Menu<MyContext>("manage-profile-menu")
   .text("✏️ Edit profile", async (ctx) => {
     return await ctx.conversation.enter(taskerEditProfileConversation.name);
   })
+  .row()
+  .webApp("Open my app", "https://elegant-corgi-obviously.ngrok-free.app")
   .row();
 
 const taskerMenu = new Menu<MyContext>("tasker-menu")
@@ -189,7 +202,13 @@ const customerMenu = new Menu<MyContext>("customer-menu")
 
       return `🤙 Manage posted tasks (${pendingTasksCount})`;
     },
-    (ctx) => ctx.reply("You pressed B!")
+    async (ctx) => {
+      const postedTasks = await getPostedTasks(ctx.from.id);
+
+      for (const task of postedTasks) {
+        await ctx.reply(task.description);
+      }
+    }
   )
   .row()
   .text(
@@ -263,3 +282,5 @@ bot.command("customer_menu", async (ctx) => {
 });
 
 bot.start();
+
+bot.on("message:web_app_data", (ctx) => console.log("Got some data"));

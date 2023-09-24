@@ -1,8 +1,6 @@
-import { db } from "@/db";
-import { users, tasks } from "@/db/schema";
+import { db, users, tasks } from "db";
 import { and, eq, sql } from "drizzle-orm";
-import { typesense } from "./typesense";
-import { Tasker, taskersSchema, tasksSchema } from "./typesense/schema";
+import { searchDb, Task, Tasker, taskersSchema, tasksSchema } from "search-db";
 
 export async function createUser({
   id,
@@ -39,7 +37,7 @@ export async function addTask({
 
   const taskId = result[0].taskId;
 
-  await typesense.collections(tasksSchema.name).documents().upsert(
+  await searchDb.collections<Task>(tasksSchema.name).documents().upsert(
     {
       id: taskId,
       customer_id: customerId,
@@ -67,16 +65,23 @@ export async function updateProfile({
   userId: number;
   profile: string;
 }) {
-  await db
+  const result = await db
     .update(users)
     .set({
       taskerProfile: profile,
     })
-    .where(eq(users.id, userId));
+    .where(eq(users.id, userId))
+    .returning({
+      chatId: users.chatId,
+    });
 
-  await typesense.collections(taskersSchema.name).documents().upsert(
+  const chatId = result[0].chatId;
+
+  await searchDb.collections<Tasker>(taskersSchema.name).documents().upsert(
     {
       id: userId.toString(),
+      user_id: userId,
+      chat_id: chatId,
       profile,
     },
     {
@@ -101,7 +106,7 @@ export async function getTaskerProfile(userId: number) {
 }
 
 export async function searchTaskers(taskDescription: string) {
-  const { hits } = await typesense
+  const { hits } = await searchDb
     .collections<Tasker>(taskersSchema.name)
     .documents()
     .search({
@@ -118,7 +123,8 @@ export async function searchTaskers(taskDescription: string) {
   console.log(hits);
 
   return hits.map((hit) => ({
-    id: hit.document.id,
+    userId: hit.document.user_id,
+    chatId: hit.document.chat_id,
     profile: hit.document.profile,
   }));
 }
@@ -139,7 +145,7 @@ export async function searchTasks(userId: number) {
     throw new Error("No profile found");
   }
 
-  const { hits } = await typesense
+  const { hits } = await searchDb
     .collections(tasksSchema.name)
     .documents()
     .search({
@@ -150,4 +156,16 @@ export async function searchTasks(userId: number) {
     });
 
   console.log(hits);
+}
+
+export async function getPostedTasks(userId: number) {
+  const postedTasks = await db.query.tasks.findMany({
+    columns: {
+      customerId: true,
+      description: true,
+    },
+    where: and(eq(tasks.customerId, userId), eq(tasks.status, "posted")),
+  });
+
+  return postedTasks;
 }

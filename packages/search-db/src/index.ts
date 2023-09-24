@@ -1,6 +1,6 @@
 import Typesense from "typesense";
 
-export const typesense = new Typesense.Client({
+export const searchDb = new Typesense.Client({
   nodes: [
     {
       host: "localhost",
@@ -11,3 +11,5 @@ export const typesense = new Typesense.Client({
   apiKey: "xyz",
   connectionTimeoutSeconds: 2,
 });
+
+export * from "./schema";
