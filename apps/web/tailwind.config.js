@@ -20,7 +20,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Bricolage Grotesque", ...defaultTheme.fontFamily.sans],
+        sans: ["Bricolage Grotesque Variable", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border))",
