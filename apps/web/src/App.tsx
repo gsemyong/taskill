@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
 import { trpc } from "./lib/trpc";
+import { WebApp } from "@grammyjs/web-app";
 
 export function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -13,7 +14,9 @@ export function App() {
 
           // You can pass any HTTP headers you wish here
           async headers() {
-            return {};
+            return {
+              initData: WebApp.initData,
+            };
           },
         }),
       ],

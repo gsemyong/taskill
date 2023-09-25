@@ -8,7 +8,8 @@
     "@trpc/server": "^10.38.4",
     "api": "workspace:*",
     "zod": "^3.22.2",
-    "trpc": "workspace:*"
+    "trpc": "workspace:*",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "tsconfig": "workspace:*",

@@ -6,8 +6,15 @@ const t = initTRPC.context<Context>().create();
 const middleware = t.middleware;
 
 const isAuthed = middleware(({ next, ctx }) => {
+  if (!ctx.user || !ctx.chat) {
+    throw new Error("Not authenticated");
+  }
+
   return next({
-    ctx: {},
+    ctx: {
+      user: ctx.user,
+      chat: ctx.chat,
+    },
   });
 });
 
