@@ -4,9 +4,7 @@ import { appRouter, createContext } from "trpc";
 import cors from "cors";
 
 createHTTPServer({
-  middleware: cors({
-    origin: "*",
-  }),
+  middleware: cors(),
   router: appRouter,
   createContext,
 }).listen(2022);

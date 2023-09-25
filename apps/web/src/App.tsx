@@ -11,7 +11,7 @@ export default function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: "http://localhost:2022/trpc",
+          url: "https://744e-217-73-28-71.ngrok-free.app/trpc",
 
           // You can pass any HTTP headers you wish here
           async headers() {

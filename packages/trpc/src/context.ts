@@ -7,6 +7,8 @@ import { env } from "./env";
 type InitData = typeof WebApp.initDataUnsafe;
 
 export async function createContext(opts: CreateHTTPContextOptions) {
+  console.log(opts.req.headers.initData);
+
   const initDataParams = new URLSearchParams(
     opts.req.headers.initData as string
   );
