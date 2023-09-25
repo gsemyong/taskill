@@ -3,6 +3,7 @@ import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
 import { trpc } from "./lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
+import Root from "./root";
 
 export function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -26,7 +27,7 @@ export function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        {/* Your app here */}
+        <Root />
       </QueryClientProvider>
     </trpc.Provider>
   );
