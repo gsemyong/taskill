@@ -1,10 +1,29 @@
 import "dotenv/config";
-import { createHTTPServer } from "@trpc/server/adapters/standalone";
-import { appRouter, createContext } from "trpc";
-import cors from "cors";
 
-createHTTPServer({
-  middleware: cors(),
-  router: appRouter,
-  createContext,
-}).listen(2022);
+import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
+import fastify from "fastify";
+import { appRouter, createContext } from "trpc";
+import cors from "@fastify/cors";
+
+const server = fastify({
+  maxParamLength: 5000,
+  logger: true,
+});
+
+await server.register(cors, {
+  origin: "*",
+});
+
+await server.register(fastifyTRPCPlugin, {
+  prefix: "/trpc",
+  trpcOptions: { router: appRouter, createContext },
+});
+
+(async () => {
+  try {
+    await server.listen({ port: 2022 });
+  } catch (err) {
+    server.log.error(err);
+    process.exit(1);
+  }
+})();

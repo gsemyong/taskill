@@ -15,6 +15,8 @@ export default function App() {
 
           // You can pass any HTTP headers you wish here
           async headers() {
+            console.log("initData", WebApp.initData);
+
             return {
               initData: WebApp.initData,
             };

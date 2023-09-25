@@ -1,12 +1,12 @@
 import { validateWebAppData } from "@grammyjs/validator";
 import { WebApp } from "@grammyjs/web-app";
 import type { inferAsyncReturnType } from "@trpc/server";
-import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
+import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
 import { env } from "./env";
 
 type InitData = typeof WebApp.initDataUnsafe;
 
-export async function createContext(opts: CreateHTTPContextOptions) {
+export async function createContext(opts: CreateFastifyContextOptions) {
   console.log(opts.req.headers.initData);
 
   const initDataParams = new URLSearchParams(

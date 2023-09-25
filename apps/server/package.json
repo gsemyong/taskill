@@ -5,10 +5,11 @@
     "dev": "tsx --watch src/index.ts"
   },
   "dependencies": {
+    "@fastify/cors": "^8.4.0",
     "@trpc/server": "^10.38.4",
     "api": "workspace:*",
-    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "fastify": "^4.23.2",
     "trpc": "workspace:*",
     "zod": "^3.22.2"
   },
