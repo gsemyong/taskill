@@ -1,12 +1,5 @@
-import { initTRPC } from "@trpc/server";
-
-export const t = initTRPC.create();
-
-export const appRouter = t.router({});
-
-export type AppRouter = typeof appRouter;
-
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
+import { appRouter } from "trpc";
 
 createHTTPServer({
   router: appRouter,
