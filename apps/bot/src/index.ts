@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Bot, Context, session } from "grammy";
 import { Menu } from "@grammyjs/menu";
 import {
@@ -282,5 +283,3 @@ bot.command("customer_menu", async (ctx) => {
 });
 
 bot.start();
-
-bot.on("message:web_app_data", (ctx) => console.log("Got some data"));

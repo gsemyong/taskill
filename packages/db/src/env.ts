@@ -4,6 +4,8 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     BOT_TOKEN: z.string().min(1),
+    DB_URL: z.string().url(),
+    DB_AUTH_TOKEN: z.string().min(1),
   },
   runtimeEnv: process.env,
 });
