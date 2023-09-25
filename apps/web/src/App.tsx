@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "./lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import Root from "./root";
@@ -23,6 +23,10 @@ export default function App() {
       ],
     })
   );
+
+  useEffect(() => {
+    WebApp.ready();
+  }, []);
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
