@@ -5,7 +5,7 @@ import { trpc } from "./lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import Root from "./root";
 
-export function App() {
+export default function App() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
