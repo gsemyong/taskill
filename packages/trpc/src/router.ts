@@ -1,15 +1,12 @@
 import { initTRPC } from "@trpc/server";
 import { procedure, router } from "./trpc";
-import superjson from "superjson";
 
-export const t = initTRPC.create({
-  transformer: superjson,
-});
+export const t = initTRPC.create();
 
 export const appRouter = router({
-  hello: procedure.query(({ ctx }) => {
+  hello: procedure.query(() => {
     return {
-      text: `hello ${ctx.user?.first_name ?? "world"}`,
+      text: "Hello, world!",
     };
   }),
 });

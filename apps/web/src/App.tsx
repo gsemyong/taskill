@@ -1,8 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { trpc } from "./lib/trpc";
-import { WebApp } from "@grammyjs/web-app";
 import Root from "./root";
 
 export default function App() {
@@ -11,24 +10,14 @@ export default function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: "https://744e-217-73-28-71.ngrok-free.app/trpc",
-
-          // You can pass any HTTP headers you wish here
-          async headers() {
-            console.log("initData", WebApp.initData);
-
-            return {
-              initData: WebApp.initData,
-            };
+          url: "https://e4d1-217-73-28-71.ngrok-free.app/trpc",
+          headers: {
+            "ngrok-skip-browser-warning": "true",
           },
         }),
       ],
     })
   );
-
-  useEffect(() => {
-    WebApp.ready();
-  }, []);
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>

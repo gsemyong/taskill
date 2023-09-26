@@ -177,15 +177,16 @@ const taskerMenu = new Menu<MyContext>("tasker-menu")
     await searchTasks(ctx.from.id);
   })
   .row()
+  .text(
+    async (ctx) => {
+      return `❓ Manage tasks waiting for approval`;
+    },
+    (ctx) => ctx.reply("You pressed B!")
+  )
+  .row()
   .text("📅 Manage scheduled tasks", (ctx) => ctx.reply("You pressed B!"))
   .row()
   .text("⌛ View past tasks", (ctx) => ctx.reply("You pressed B!"))
-  .row()
-  .text("⚙️ Manage settings", (ctx) => ctx.reply("You pressed B!"))
-  .row()
-  .text("💸 Manage payments", (ctx) => ctx.reply("You pressed B!"))
-  .row()
-  .text("🫶 Contact support", (ctx) => ctx.reply("You pressed B!"))
   .row();
 
 const customerMenu = new Menu<MyContext>("customer-menu")
@@ -222,10 +223,6 @@ const customerMenu = new Menu<MyContext>("customer-menu")
   .text("📅 Manage scheduled tasks", (ctx) => ctx.reply("You pressed B!"))
   .row()
   .text("⌛ View tasks history", (ctx) => ctx.reply("You pressed B!"))
-  .row()
-  .text("⚙️ Manage settings", (ctx) => ctx.reply("You pressed B!"))
-  .row()
-  .text("🫶 Contact support", (ctx) => ctx.reply("You pressed B!"))
   .row();
 
 bot.use(
