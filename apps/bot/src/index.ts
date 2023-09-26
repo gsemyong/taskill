@@ -10,7 +10,6 @@ import {
 import {
   addTask,
   createUser,
-  getPostedTasks,
   getPostedTasksCount,
   getTaskerProfile,
   searchTaskers,
@@ -194,24 +193,15 @@ const customerMenu = new Menu<MyContext>("customer-menu")
     ctx.conversation.enter(customerAddNewTaskConversation.name)
   )
   .row()
-  .text(
-    async (ctx) => {
-      if (!ctx.from?.id) {
-        throw new Error("No user ID found");
-      }
-
-      const pendingTasksCount = await getPostedTasksCount(ctx.from.id);
-
-      return `🤙 Manage posted tasks (${pendingTasksCount})`;
-    },
-    async (ctx) => {
-      const postedTasks = await getPostedTasks(ctx.from.id);
-
-      for (const task of postedTasks) {
-        await ctx.reply(task.description);
-      }
+  .webApp(async (ctx) => {
+    if (!ctx.from?.id) {
+      throw new Error("No user ID found");
     }
-  )
+
+    const pendingTasksCount = await getPostedTasksCount(ctx.from.id);
+
+    return `🤙 Manage posted tasks (${pendingTasksCount})`;
+  }, "https://elegant-corgi-obviously.ngrok-free.app/manage-tasks")
   .row()
   .text(
     async (ctx) => {
@@ -222,7 +212,7 @@ const customerMenu = new Menu<MyContext>("customer-menu")
   .row()
   .text("📅 Manage scheduled tasks", (ctx) => ctx.reply("You pressed B!"))
   .row()
-  .text("⌛ View tasks history", (ctx) => ctx.reply("You pressed B!"))
+  .text("⌛ View past tasks", (ctx) => ctx.reply("You pressed B!"))
   .row();
 
 bot.use(

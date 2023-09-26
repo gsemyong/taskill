@@ -1,12 +1,15 @@
 import { initTRPC } from "@trpc/server";
-import { procedure, router } from "./trpc";
+import { protectedProcedure, router } from "./trpc";
+import { getPostedTasks } from "api";
 
 export const t = initTRPC.create();
 
 export const appRouter = router({
-  hello: procedure.query(() => {
+  tasks: protectedProcedure.query(async ({ ctx }) => {
+    const tasks = await getPostedTasks(ctx.user.id);
+
     return {
-      text: "Hello, world!",
+      tasks,
     };
   }),
 });
