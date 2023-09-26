@@ -161,6 +161,7 @@ export async function searchTasks(userId: number) {
 export async function getPostedTasks(userId: number) {
   const postedTasks = await db.query.tasks.findMany({
     columns: {
+      id: true,
       customerId: true,
       description: true,
     },
@@ -168,4 +169,16 @@ export async function getPostedTasks(userId: number) {
   });
 
   return postedTasks;
+}
+
+export async function deleteTask({
+  taskId,
+  userId,
+}: {
+  taskId: string;
+  userId: number;
+}) {
+  await db
+    .delete(tasks)
+    .where(and(eq(tasks.id, taskId), eq(tasks.customerId, userId)));
 }

@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useEffect, useState } from "react";
-import { trpc } from "./lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { trpc } from "./lib/trpc";
 import ManageTasks from "./routes/manage-tasks";
 
 const router = createBrowserRouter([
