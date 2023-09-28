@@ -19,14 +19,14 @@ export default function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: "https://e4d1-217-73-28-71.ngrok-free.app/trpc",
+          url: "https://498b-217-73-28-71.ngrok-free.app/trpc",
           headers: {
             "ngrok-skip-browser-warning": "true",
             "init-data": WebApp.initData,
           },
         }),
       ],
-    })
+    }),
   );
   const [ready, setReady] = useState(false);
 

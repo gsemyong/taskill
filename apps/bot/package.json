@@ -5,6 +5,7 @@
     "dev": "tsx --watch src/index.ts"
   },
   "dependencies": {
+    "@epic-web/remember": "^1.0.2",
     "@grammyjs/conversations": "^1.1.2",
     "@grammyjs/menu": "^1.2.1",
     "@t3-oss/env-core": "^0.6.1",
