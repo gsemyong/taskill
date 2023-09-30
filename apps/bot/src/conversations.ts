@@ -34,6 +34,7 @@ export async function customerAddNewTaskConversation(
     const { user } = await bot.api.getChatMember(tasker.chatId, tasker.userId);
 
     await bot.api.sendMessage(tasker.chatId, "New task is available for you!");
+
     await bot.api.sendMessage(
       tasker.chatId,
       `${description}\n\n@${user.username}`

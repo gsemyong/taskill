@@ -7,7 +7,6 @@ import cors from "@fastify/cors";
 
 const server = fastify({
   maxParamLength: 5000,
-  logger: true,
 });
 
 await server.register(cors, {
