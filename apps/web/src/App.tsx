@@ -1,20 +1,22 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { WebApp } from "@grammyjs/web-app";
 import { trpc } from "./lib/trpc";
 import CustomerDashobard from "./routes/customer-dashboard";
-import AddNewTask from "./routes/add-new-task";
+import PostNewTask from "./routes/post-new-task";
 import PostedTasks from "./routes/posted-tasks";
 import Proposals from "./routes/proposals";
 import OngoingTasks from "./routes/ongoing-tasks";
 import InterestedTaskers from "./routes/interested-taskers";
 import TaskerProfile from "./routes/tasker-profile";
+import Root from "./routes/root";
 
 const router = createBrowserRouter([
   {
     path: "customer",
+    element: <Root />,
     children: [
       {
         index: true,
@@ -22,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "new",
-        element: <AddNewTask />,
+        element: <PostNewTask />,
       },
       {
         path: "posted",
@@ -63,13 +65,6 @@ const App = () => {
       ],
     }),
   );
-
-  useEffect(() => {
-    WebApp.ready();
-    WebApp.setBackgroundColor("secondary_bg_color");
-    WebApp.setHeaderColor("secondary_bg_color");
-    document.body.style.backgroundColor = "";
-  }, []);
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
