@@ -15,7 +15,7 @@ import Root from "./routes/root";
 import TaskerDashboard from "./routes/tasker/tasker-dashboard";
 import GettingStarted from "./routes/tasker/getting-started";
 import DiscoverTasks from "./routes/tasker/discover-tasks";
-import PendingTasks from "./routes/tasker/pending-tasks";
+import InterestingTasks from "./routes/tasker/interesting-tasks";
 import TaskerOngoingTasks from "./routes/tasker/ongoing-tasks";
 import MyProfile from "./routes/tasker/my-profile";
 
@@ -37,8 +37,8 @@ const router = createBrowserRouter([
         element: <DiscoverTasks />,
       },
       {
-        path: "pending",
-        element: <PendingTasks />,
+        path: "interesting",
+        element: <InterestingTasks />,
       },
       {
         path: "ongoing",

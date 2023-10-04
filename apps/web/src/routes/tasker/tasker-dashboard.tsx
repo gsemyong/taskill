@@ -3,8 +3,8 @@ import { WebApp } from "@grammyjs/web-app";
 import {
   ChevronRightIcon,
   WrenchScrewdriverIcon,
-  QuestionMarkCircleIcon,
   UserCircleIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,8 +13,9 @@ const TaskerDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    WebApp.MainButton.setText("Discover tasks");
+    WebApp.BackButton.hide();
 
+    WebApp.MainButton.setText("Discover tasks");
     WebApp.MainButton.show();
   }, [navigate]);
 
@@ -22,12 +23,12 @@ const TaskerDashboard = () => {
     <MainLayout header="Tasker">
       <div className="space-y-4">
         <Link
-          to="/tasker/pending"
+          to="/tasker/interesting"
           className="flex w-full items-center justify-between rounded-md bg-background p-4"
         >
           <span className="flex items-center gap-2">
-            <QuestionMarkCircleIcon className="h-5 w-5" />
-            Pending tasks (1)
+            <SparklesIcon className="h-5 w-5" />
+            Interesting tasks (1)
           </span>
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
@@ -42,7 +43,7 @@ const TaskerDashboard = () => {
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
         <Link
-          to="/tasker/ongoing"
+          to="/tasker/profile"
           className="flex w-full items-center justify-between rounded-md bg-background p-4"
         >
           <span className="flex items-center gap-2">

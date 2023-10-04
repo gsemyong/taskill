@@ -1,7 +1,7 @@
 import Card from "@/components/card";
 import MainLayout from "@/components/main-layout";
 import { WebApp } from "@grammyjs/web-app";
-import { BriefcaseIcon } from "@heroicons/react/24/outline";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 
 const DiscoverTasks = () => {
@@ -22,8 +22,8 @@ const DiscoverTasks = () => {
           </div>
           <div className="flex gap-2 self-end">
             <button className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-primary-foreground">
-              <BriefcaseIcon className="h-5 w-5" />
-              Make suggestion
+              <SparklesIcon className="h-5 w-5" />
+              I'm interested
             </button>
           </div>
         </Card>
