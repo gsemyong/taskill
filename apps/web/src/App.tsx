@@ -4,14 +4,14 @@ import { useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { WebApp } from "@grammyjs/web-app";
 import { trpc } from "./lib/trpc";
-import CustomerDashobard from "./routes/customer-dashboard";
-import PostNewTask from "./routes/post-new-task";
-import PostedTasks from "./routes/posted-tasks";
-import Proposals from "./routes/proposals";
-import OngoingTasks from "./routes/ongoing-tasks";
-import InterestedTaskers from "./routes/interested-taskers";
-import TaskerProfile from "./routes/tasker-profile";
-import Root from "./routes/root";
+import CustomerDashobard from "./routes/customer/customer-dashboard";
+import PostNewTask from "./routes/customer/post-new-task";
+import PostedTasks from "./routes/customer/posted-tasks";
+import Proposals from "./routes/customer/proposals";
+import OngoingTasks from "./routes/customer/ongoing-tasks";
+import InterestedTaskers from "./routes/customer/interested-taskers";
+import TaskerProfile from "./routes/customer/tasker-profile";
+import Root from "./routes/customer/root";
 
 const router = createBrowserRouter([
   {

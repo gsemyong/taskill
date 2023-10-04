@@ -20,7 +20,7 @@ const CustomerDashobard = () => {
   }, [navigate]);
 
   return (
-    <MainLayout header="Tasks">
+    <MainLayout header="Customer">
       <div className="space-y-4">
         <Link
           to="/customer/posted"
