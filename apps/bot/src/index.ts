@@ -6,7 +6,7 @@ bot.api.setChatMenuButton({
     text: "Open app",
     type: "web_app",
     web_app: {
-      url: "https://elegant-corgi-obviously.ngrok-free.app/customer",
+      url: "https://elegant-corgi-obviously.ngrok-free.app/tasker",
     },
   },
 });

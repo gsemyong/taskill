@@ -8,12 +8,48 @@ import CustomerDashobard from "./routes/customer/customer-dashboard";
 import PostNewTask from "./routes/customer/post-new-task";
 import PostedTasks from "./routes/customer/posted-tasks";
 import Proposals from "./routes/customer/proposals";
-import OngoingTasks from "./routes/customer/ongoing-tasks";
+import CustomerOngoingTasks from "./routes/customer/ongoing-tasks";
 import InterestedTaskers from "./routes/customer/interested-taskers";
 import TaskerProfile from "./routes/customer/tasker-profile";
-import Root from "./routes/customer/root";
+import Root from "./routes/root";
+import TaskerDashboard from "./routes/tasker/tasker-dashboard";
+import GettingStarted from "./routes/tasker/getting-started";
+import DiscoverTasks from "./routes/tasker/discover-tasks";
+import PendingTasks from "./routes/tasker/pending-tasks";
+import TaskerOngoingTasks from "./routes/tasker/ongoing-tasks";
+import MyProfile from "./routes/tasker/my-profile";
 
 const router = createBrowserRouter([
+  {
+    path: "tasker",
+    element: <Root />,
+    children: [
+      {
+        index: true,
+        element: <TaskerDashboard />,
+      },
+      {
+        path: "getting-started",
+        element: <GettingStarted />,
+      },
+      {
+        path: "discover",
+        element: <DiscoverTasks />,
+      },
+      {
+        path: "pending",
+        element: <PendingTasks />,
+      },
+      {
+        path: "ongoing",
+        element: <TaskerOngoingTasks />,
+      },
+      {
+        path: "profile",
+        element: <MyProfile />,
+      },
+    ],
+  },
   {
     path: "customer",
     element: <Root />,
@@ -36,7 +72,7 @@ const router = createBrowserRouter([
       },
       {
         path: "ongoing",
-        element: <OngoingTasks />,
+        element: <CustomerOngoingTasks />,
       },
       {
         path: "interested/:taskId",
