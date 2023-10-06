@@ -4,7 +4,7 @@ import { WebApp } from "@grammyjs/web-app";
 import { StarIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 
-const TaskerProfile = () => {
+export const TaskerProfile = () => {
   useEffect(() => {
     WebApp.MainButton.setText("Chat");
     WebApp.MainButton.show();
@@ -39,5 +39,3 @@ const TaskerProfile = () => {
     </MainLayout>
   );
 };
-
-export default TaskerProfile;

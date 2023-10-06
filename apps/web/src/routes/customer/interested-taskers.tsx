@@ -5,7 +5,7 @@ import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const InterestedTaskers = () => {
+export const InterestedTaskers = () => {
   useEffect(() => {
     WebApp.MainButton.hide();
   }, []);
@@ -33,5 +33,3 @@ const InterestedTaskers = () => {
     </MainLayout>
   );
 };
-
-export default InterestedTaskers;

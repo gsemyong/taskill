@@ -3,7 +3,7 @@ import { WebApp } from "@grammyjs/web-app";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const PostNewTask = () => {
+export const PostNewTask = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,5 +43,3 @@ const PostNewTask = () => {
     </MainLayout>
   );
 };
-
-export default PostNewTask;

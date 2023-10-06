@@ -9,7 +9,7 @@ import {
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const TaskerDashboard = () => {
+export const TaskerDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,5 +56,3 @@ const TaskerDashboard = () => {
     </MainLayout>
   );
 };
-
-export default TaskerDashboard;

@@ -5,7 +5,7 @@ import { BriefcaseIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const InterestingTasks = () => {
+export const InterestingTasks = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,5 +56,3 @@ const InterestingTasks = () => {
     </MainLayout>
   );
 };
-
-export default InterestingTasks;

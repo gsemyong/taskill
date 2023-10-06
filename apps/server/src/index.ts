@@ -4,18 +4,28 @@ import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 import fastify from "fastify";
 import { appRouter, createContext } from "trpc";
 import cors from "@fastify/cors";
+import { appsMenu } from "./menu";
 
-bot.api.setChatMenuButton({
-  menu_button: {
-    text: "Open app",
-    type: "web_app",
-    web_app: {
-      url: "https://elegant-corgi-obviously.ngrok-free.app/tasker",
-    },
+bot.api.setMyCommands([
+  {
+    command: "start",
+    description: "Start the bot",
   },
-});
+  {
+    command: "apps",
+    description: "List all apps",
+  },
+]);
 
-bot.command("start", (ctx) => ctx.reply("Hello world!"));
+bot.use(appsMenu);
+
+bot.command("start", (ctx) => ctx.reply("Welocome!"));
+
+bot.command("apps", (ctx) =>
+  ctx.reply("Apps menu", {
+    reply_markup: appsMenu,
+  })
+);
 
 bot.start();
 

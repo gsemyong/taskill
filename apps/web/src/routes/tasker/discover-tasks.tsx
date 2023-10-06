@@ -4,7 +4,7 @@ import { WebApp } from "@grammyjs/web-app";
 import { SparklesIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 
-const DiscoverTasks = () => {
+export const DiscoverTasks = () => {
   useEffect(() => {
     WebApp.BackButton.show();
 
@@ -31,5 +31,3 @@ const DiscoverTasks = () => {
     </MainLayout>
   );
 };
-
-export default DiscoverTasks;

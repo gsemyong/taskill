@@ -4,7 +4,7 @@ import { WebApp } from "@grammyjs/web-app";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const Proposals = () => {
+export const Proposals = () => {
   useEffect(() => {
     WebApp.BackButton.show();
 
@@ -43,5 +43,3 @@ const Proposals = () => {
     </MainLayout>
   );
 };
-
-export default Proposals;

@@ -9,7 +9,7 @@ import {
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const CustomerDashobard = () => {
+export const CustomerDashobard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,5 +56,3 @@ const CustomerDashobard = () => {
     </MainLayout>
   );
 };
-
-export default CustomerDashobard;

@@ -2,15 +2,12 @@ import { WebApp } from "@grammyjs/web-app";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-const Root = () => {
+export const Root = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     WebApp.BackButton.onClick(() => {
-      if (
-        window.location.pathname.startsWith("/tasker/discover") ||
-        window.location.pathname.startsWith("/customer/new")
-      ) {
+      if (window.location.pathname.startsWith("/tasker/discover")) {
         navigate(-2);
       } else {
         navigate(-1);
@@ -18,13 +15,7 @@ const Root = () => {
     });
 
     WebApp.MainButton.onClick(() => {
-      if (window.location.pathname.startsWith("/customer")) {
-        navigate("/customer/new");
-      }
-
-      if (window.location.pathname.startsWith("/tasker")) {
-        navigate("/tasker/discover");
-      }
+      navigate("/tasker/discover");
     });
 
     WebApp.ready();
@@ -36,5 +27,3 @@ const Root = () => {
 
   return <Outlet />;
 };
-
-export default Root;
