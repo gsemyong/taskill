@@ -20,15 +20,18 @@ export async function createUser({
 
 export async function addTask({
   customerId,
+  title,
   description,
 }: {
   customerId: number;
+  title: string;
   description: string;
 }) {
   const result = await db
     .insert(tasks)
     .values({
       customerId,
+      title,
       description,
     })
     .returning({
@@ -60,15 +63,18 @@ export async function getPostedTasksCount(customerId: number) {
 
 export async function updateProfile({
   userId,
+  fullName,
   profile,
 }: {
   userId: number;
+  fullName: string;
   profile: string;
 }) {
   const result = await db
     .update(users)
     .set({
-      taskerProfile: profile,
+      fullName,
+      profile,
     })
     .where(eq(users.id, userId))
     .returning({
@@ -90,10 +96,11 @@ export async function updateProfile({
   );
 }
 
-export async function getTaskerProfile(userId: number) {
+export async function getTaskerData(userId: number) {
   const user = await db.query.users.findFirst({
     columns: {
-      taskerProfile: true,
+      fullName: true,
+      profile: true,
     },
     where: eq(users.id, userId),
   });
@@ -102,7 +109,7 @@ export async function getTaskerProfile(userId: number) {
     throw new Error("No tasker found");
   }
 
-  return user.taskerProfile;
+  return user;
 }
 
 export async function searchTaskers(taskDescription: string) {
@@ -132,7 +139,7 @@ export async function searchTaskers(taskDescription: string) {
 export async function searchTasks(userId: number) {
   const user = await db.query.users.findFirst({
     columns: {
-      taskerProfile: true,
+      profile: true,
     },
     where: eq(users.id, userId),
   });
@@ -141,7 +148,7 @@ export async function searchTasks(userId: number) {
     throw new Error("No tasker found");
   }
 
-  if (!user.taskerProfile) {
+  if (!user.profile) {
     throw new Error("No profile found");
   }
 
@@ -149,7 +156,7 @@ export async function searchTasks(userId: number) {
     .collections(tasksSchema.name)
     .documents()
     .search({
-      q: user.taskerProfile,
+      q: user.profile,
       query_by: "description,embedding",
       exclude_fields: "embedding",
       per_page: 10,
