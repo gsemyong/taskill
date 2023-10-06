@@ -44,6 +44,7 @@ export async function addTask({
     {
       id: taskId,
       customer_id: customerId,
+      title,
       description,
     },
     {
@@ -61,7 +62,7 @@ export async function getPostedTasksCount(customerId: number) {
   return result[0].count;
 }
 
-export async function updateProfile({
+export async function setUserData({
   userId,
   fullName,
   profile,
@@ -153,7 +154,7 @@ export async function searchTasks(userId: number) {
   }
 
   const { hits } = await searchDb
-    .collections(tasksSchema.name)
+    .collections<Task>(tasksSchema.name)
     .documents()
     .search({
       q: user.profile,
@@ -162,14 +163,19 @@ export async function searchTasks(userId: number) {
       per_page: 10,
     });
 
-  console.log(hits);
+  return hits?.map((hit) => ({
+    taskId: hit.document.id,
+    customerId: hit.document.customer_id,
+    title: hit.document.title,
+    description: hit.document.description,
+  }));
 }
 
 export async function getPostedTasks(userId: number) {
   const postedTasks = await db.query.tasks.findMany({
     columns: {
       id: true,
-      customerId: true,
+      title: true,
       description: true,
     },
     where: and(eq(tasks.customerId, userId), eq(tasks.status, "posted")),
@@ -188,4 +194,17 @@ export async function deleteTask({
   await db
     .delete(tasks)
     .where(and(eq(tasks.id, taskId), eq(tasks.customerId, userId)));
+  await searchDb.collections<Task>(tasksSchema.name).documents().delete(taskId);
+}
+
+export async function getUser({ userId }: { userId: number }) {
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, userId),
+  });
+
+  if (!user) {
+    throw new Error("No user found");
+  }
+
+  return user;
 }

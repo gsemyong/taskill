@@ -12,10 +12,10 @@ import {
   PostedTasks,
   Proposals,
   TaskerProfile,
-  CustomerRoot,
 } from "./routes/customer";
 import {
   DiscoverTasks,
+  EditProfile,
   GettingStarted,
   InterestingTasks,
   MyProfile,
@@ -23,69 +23,78 @@ import {
   TaskerOngoingTasks,
   TaskerRoot,
 } from "./routes/tasker";
+import { Root } from "./routes/root";
 
 const router = createBrowserRouter([
   {
-    path: "tasker",
-    element: <TaskerRoot />,
+    element: <Root />,
     children: [
       {
-        index: true,
-        element: <TaskerDashboard />,
+        path: "tasker",
+        element: <TaskerRoot />,
+        children: [
+          {
+            index: true,
+            element: <TaskerDashboard />,
+          },
+          {
+            path: "getting-started",
+            element: <GettingStarted />,
+          },
+          {
+            path: "discover",
+            element: <DiscoverTasks />,
+          },
+          {
+            path: "interesting",
+            element: <InterestingTasks />,
+          },
+          {
+            path: "ongoing",
+            element: <TaskerOngoingTasks />,
+          },
+          {
+            path: "profile",
+            element: <MyProfile />,
+          },
+          {
+            path: "edit-profile",
+            element: <EditProfile />,
+          },
+        ],
       },
       {
-        path: "getting-started",
-        element: <GettingStarted />,
-      },
-      {
-        path: "discover",
-        element: <DiscoverTasks />,
-      },
-      {
-        path: "interesting",
-        element: <InterestingTasks />,
-      },
-      {
-        path: "ongoing",
-        element: <TaskerOngoingTasks />,
-      },
-      {
-        path: "profile",
-        element: <MyProfile />,
-      },
-    ],
-  },
-  {
-    path: "customer",
-    element: <CustomerRoot />,
-    children: [
-      {
-        index: true,
-        element: <CustomerDashobard />,
-      },
-      {
-        path: "new",
-        element: <PostNewTask />,
-      },
-      {
-        path: "posted",
-        element: <PostedTasks />,
-      },
-      {
-        path: "proposals",
-        element: <Proposals />,
-      },
-      {
-        path: "ongoing",
-        element: <CustomerOngoingTasks />,
-      },
-      {
-        path: "interested/:taskId",
-        element: <InterestedTaskers />,
-      },
-      {
-        path: "tasker/:taskerId",
-        element: <TaskerProfile />,
+        path: "customer",
+        children: [
+          {
+            index: true,
+            element: <CustomerDashobard />,
+          },
+          {
+            path: "new",
+            element: <PostNewTask />,
+          },
+          {
+            path: "posted",
+            element: <PostedTasks />,
+          },
+          {
+            path: "proposals",
+            element: <Proposals />,
+          },
+          {
+            path: "ongoing",
+            element: <CustomerOngoingTasks />,
+          },
+          {
+            path: "interested/:taskId",
+            element: <InterestedTaskers />,
+          },
+          {
+            path: "tasker/:taskerId",
+            element: <TaskerProfile />,
+          },
+        ],
       },
     ],
   },

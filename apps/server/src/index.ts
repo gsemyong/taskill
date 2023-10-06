@@ -5,6 +5,7 @@ import fastify from "fastify";
 import { appRouter, createContext } from "trpc";
 import cors from "@fastify/cors";
 import { appsMenu } from "./menu";
+import { createUser } from "api";
 
 bot.api.setMyCommands([
   {
@@ -19,7 +20,18 @@ bot.api.setMyCommands([
 
 bot.use(appsMenu);
 
-bot.command("start", (ctx) => ctx.reply("Welocome!"));
+bot.command("start", async (ctx) => {
+  if (!ctx.from) {
+    throw new Error("No from");
+  }
+
+  await createUser({
+    id: ctx.from.id,
+    chatId: ctx.chat.id,
+  });
+
+  await ctx.reply("Welcome to the bot");
+});
 
 bot.command("apps", (ctx) =>
   ctx.reply("Apps menu", {

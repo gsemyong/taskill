@@ -2,11 +2,11 @@ import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
-import { RocketLaunchIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const GettingStarted = () => {
+export const EditProfile = () => {
   const utils = trpc.useContext();
 
   const setUserDataMutation = trpc.setUserData.useMutation({
@@ -18,15 +18,19 @@ export const GettingStarted = () => {
     },
   });
 
-  useBackButton(false);
+  useBackButton(true);
 
-  const [fullName, setFullName] = useState("");
-  const [profile, setProfile] = useState("");
+  const getUserQuery = trpc.getUser.useQuery();
+
+  const [fullName, setFullName] = useState(
+    getUserQuery.data?.user.fullName ?? "",
+  );
+  const [profile, setProfile] = useState(getUserQuery.data?.user.profile ?? "");
 
   const navigate = useNavigate();
 
   return (
-    <MainLayout header="Getting started" subHeader="Finish your profile setup">
+    <MainLayout header="Edit profile">
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
           <label htmlFor="fullName" className="text-hint">
@@ -65,8 +69,8 @@ export const GettingStarted = () => {
           }}
           className="text-md flex w-full items-center justify-center gap-2 rounded-lg bg-primary p-2 font-medium text-primary-foreground"
         >
-          <RocketLaunchIcon className="h-5 w-5" />
-          Finish setup
+          <CheckCircleIcon className="h-5 w-5" />
+          Save
         </button>
       </div>
     </MainLayout>

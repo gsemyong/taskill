@@ -5,8 +5,7 @@
   "types": "src/index.ts",
   "scripts": {
     "init": "tsx src/scripts/init.ts",
-    "reset": "tsx src/scripts/reset.ts",
-    "seed": "tsx src/scripts/seed.ts"
+    "reset": "tsx src/scripts/reset.ts"
   },
   "dependencies": {
     "typesense": "^1.7.1",

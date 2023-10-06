@@ -52,6 +52,10 @@ export const tasksSchema: CollectionCreateSchema = {
       index: false,
     },
     {
+      name: "title",
+      type: "string",
+    },
+    {
       name: "description",
       type: "string",
     },
@@ -59,7 +63,7 @@ export const tasksSchema: CollectionCreateSchema = {
       name: "embedding",
       type: "float[]",
       embed: {
-        from: ["description"],
+        from: ["title", "description"],
         model_config: {
           model_name: "ts/all-MiniLM-L12-v2",
         },
@@ -71,6 +75,7 @@ export const tasksSchema: CollectionCreateSchema = {
 export const taskSchemaZod = z.object({
   id: z.string(),
   customer_id: z.number(),
+  title: z.string(),
   description: z.string(),
 });
 

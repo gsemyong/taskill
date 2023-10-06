@@ -1,26 +1,29 @@
 import MainLayout from "@/components/main-layout";
-import { WebApp } from "@grammyjs/web-app";
+import { useBackButton } from "@/hooks/use-back-button";
 import {
   ChevronRightIcon,
   WrenchScrewdriverIcon,
   UserCircleIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const TaskerDashboard = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    WebApp.BackButton.hide();
-
-    WebApp.MainButton.setText("Discover tasks");
-    WebApp.MainButton.show();
-  }, [navigate]);
+  useBackButton(false);
 
   return (
-    <MainLayout header="Tasker">
+    <MainLayout
+      header="Tasker"
+      action={
+        <Link
+          to="/tasker/discover"
+          className="text-md flex items-center justify-center gap-2 rounded-lg bg-primary p-2 font-medium text-primary-foreground"
+        >
+          <SparklesIcon className="h-5 w-5" />
+          Discover tasks
+        </Link>
+      }
+    >
       <div className="space-y-4">
         <Link
           to="/tasker/interesting"
