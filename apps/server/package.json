@@ -5,16 +5,20 @@
     "dev": "tsx --watch src/index.ts"
   },
   "dependencies": {
-    "@fastify/cors": "^8.4.0",
-    "@trpc/server": "^10.38.4",
+    "@epic-web/remember": "^1.0.2",
+    "@grammyjs/conversations": "^1.1.2",
+    "@grammyjs/menu": "^1.2.1",
+    "@t3-oss/env-core": "^0.6.1",
     "api": "workspace:*",
-    "dotenv": "^16.3.1",
-    "fastify": "^4.23.2",
     "trpc": "workspace:*",
-    "zod": "^3.22.2"
+    "dotenv": "^16.3.1",
+    "grammy": "^1.19.0",
+    "zod": "^3.22.2",
+    "fastify": "^4.23.2",
+    "@fastify/cors": "^8.4.0",
+    "@trpc/server": "^10.38.4"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.14",
     "tsconfig": "workspace:*",
     "tsx": "^3.13.0"
   }
