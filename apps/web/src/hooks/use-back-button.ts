@@ -1,12 +1,31 @@
 import { WebApp } from "@grammyjs/web-app";
 import { useEffect } from "react";
 
-export const useBackButton = (show: boolean) => {
+export const useBackButton = ({
+  show,
+  onClick,
+}:
+  | {
+      show: true;
+      onClick: () => void;
+    }
+  | {
+      show: false;
+      text?: undefined;
+      onClick?: undefined;
+    }) => {
   useEffect(() => {
     if (show) {
+      WebApp.BackButton.onClick(onClick);
       WebApp.BackButton.show();
     } else {
       WebApp.BackButton.hide();
     }
-  }, [show]);
+
+    return () => {
+      if (show) {
+        WebApp.BackButton.offClick(onClick);
+      }
+    };
+  }, [onClick, show]);
 };

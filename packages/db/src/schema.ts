@@ -1,4 +1,4 @@
-import { sqliteTable, text, int } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, int, blob } from "drizzle-orm/sqlite-core";
 import { createId } from "@paralleldrive/cuid2";
 import { relations } from "drizzle-orm";
 
@@ -22,7 +22,6 @@ export const tasks = sqliteTable("tasks", {
     .$defaultFn(() => createId()),
   customerId: int("customer_id").notNull(),
   taskerId: int("tasker_id"),
-  title: text("title").notNull(),
   description: text("description").notNull(),
   status: text("status", {
     enum: ["posted", "ongoing", "finished"],

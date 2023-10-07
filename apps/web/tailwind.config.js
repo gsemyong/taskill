@@ -7,13 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--tg-theme-bg-color)",
-        foreground: "var(--tg-theme-text-color)",
-        hint: "var(--tg-theme-hint-color)",
-        link: "var(--tg-theme-link-color)",
-        primary: "var(--tg-theme-button-color)",
-        "primary-foreground": "var(--tg-theme-button-text-color)",
-        "secondary-background": "var(--tg-theme-secondary-bg-color)",
+        background: "rgb(var(--tg-theme-bg-color))",
+        foreground: "rgb(var(--tg-theme-text-color))",
+        hint: "rgb(var(--tg-theme-hint-color))",
+        link: "rgb(var(--tg-theme-link-color))",
+        primary: "rgb(var(--tg-theme-button-color))",
+        "primary-foreground": "rgb(var(--tg-theme-button-text-color))",
+        "secondary-background": "rgb(var(--tg-theme-secondary-bg-color))",
       },
       fontFamily: {
         sans: ["Bricolage Grotesque Variable", ...defaultTheme.fontFamily.sans],

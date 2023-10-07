@@ -11,13 +11,14 @@ import {
   PostNewTask,
   PostedTasks,
   Proposals,
+  Task,
   TaskerProfile,
 } from "./routes/customer";
 import {
   DiscoverTasks,
   EditProfile,
   GettingStarted,
-  InterestingTasks,
+  MakeProposal,
   MyProfile,
   TaskerDashboard,
   TaskerOngoingTasks,
@@ -46,10 +47,6 @@ const router = createBrowserRouter([
             element: <DiscoverTasks />,
           },
           {
-            path: "interesting",
-            element: <InterestingTasks />,
-          },
-          {
             path: "ongoing",
             element: <TaskerOngoingTasks />,
           },
@@ -60,6 +57,10 @@ const router = createBrowserRouter([
           {
             path: "edit-profile",
             element: <EditProfile />,
+          },
+          {
+            path: "proposal/:taskId",
+            element: <MakeProposal />,
           },
         ],
       },
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
           {
             path: "tasker/:taskerId",
             element: <TaskerProfile />,
+          },
+          {
+            path: "post/:taskId",
+            element: <Task />,
           },
         ],
       },

@@ -5,30 +5,27 @@ import {
   BriefcaseIcon,
   ChatBubbleBottomCenterIcon,
   ChevronRightIcon,
-  PlusIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const CustomerDashobard = () => {
-  useBackButton(false);
-  useMainButton({
+  const navigate = useNavigate();
+
+  useBackButton({
     show: false,
   });
 
+  useMainButton({
+    show: true,
+    onClick() {
+      navigate("/customer/new");
+    },
+    text: "Add new task",
+  });
+
   return (
-    <MainLayout
-      header="Customer"
-      action={
-        <Link
-          to="/customer/new"
-          className="text-md flex items-center justify-center gap-2 rounded-lg bg-primary p-2 font-medium text-primary-foreground"
-        >
-          <PlusIcon className="h-5 w-5" />
-          New task
-        </Link>
-      }
-    >
+    <MainLayout header="Customer">
       <div className="space-y-4">
         <Link
           to="/customer/posted"
@@ -36,7 +33,7 @@ export const CustomerDashobard = () => {
         >
           <span className="flex items-center gap-2">
             <ChatBubbleBottomCenterIcon className="h-5 w-5" />
-            Posted tasks (1)
+            Posted tasks
           </span>
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
@@ -46,7 +43,7 @@ export const CustomerDashobard = () => {
         >
           <span className="flex items-center gap-2">
             <BriefcaseIcon className="h-5 w-5" />
-            Proposals from taskers (1)
+            Proposals from taskers
           </span>
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
@@ -56,7 +53,7 @@ export const CustomerDashobard = () => {
         >
           <span className="flex items-center gap-2">
             <WrenchScrewdriverIcon className="h-5 w-5" />
-            Ongoing tasks (1)
+            Ongoing tasks
           </span>
           <ChevronRightIcon className="h-5 w-5" />
         </Link>

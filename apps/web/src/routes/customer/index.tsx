@@ -5,3 +5,4 @@ export { Proposals } from "./proposals";
 export { OngoingTasks as CustomerOngoingTasks } from "./ongoing-tasks";
 export { InterestedTaskers } from "./interested-taskers";
 export { TaskerProfile } from "./tasker-profile";
+export { Task } from "./task";

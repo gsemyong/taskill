@@ -1,37 +1,39 @@
 import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
+import { useMainButton } from "@/hooks/use-main-button";
 import {
   ChevronRightIcon,
   WrenchScrewdriverIcon,
   UserCircleIcon,
-  SparklesIcon,
+  StarIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const TaskerDashboard = () => {
-  useBackButton(false);
+  useBackButton({
+    show: false,
+  });
+
+  const navigate = useNavigate();
+
+  useMainButton({
+    show: true,
+    onClick() {
+      navigate("/tasker/discover");
+    },
+    text: "Discover tasks",
+  });
 
   return (
-    <MainLayout
-      header="Tasker"
-      action={
-        <Link
-          to="/tasker/discover"
-          className="text-md flex items-center justify-center gap-2 rounded-lg bg-primary p-2 font-medium text-primary-foreground"
-        >
-          <SparklesIcon className="h-5 w-5" />
-          Discover tasks
-        </Link>
-      }
-    >
+    <MainLayout header="Tasker">
       <div className="space-y-4">
         <Link
           to="/tasker/interesting"
           className="flex w-full items-center justify-between rounded-md bg-background p-4"
         >
           <span className="flex items-center gap-2">
-            <SparklesIcon className="h-5 w-5" />
-            Interesting tasks (1)
+            <StarIcon className="h-5 w-5" />
+            Interesting tasks
           </span>
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
@@ -41,7 +43,7 @@ export const TaskerDashboard = () => {
         >
           <span className="flex items-center gap-2">
             <WrenchScrewdriverIcon className="h-5 w-5" />
-            Ongoing tasks (1)
+            Ongoing tasks
           </span>
           <ChevronRightIcon className="h-5 w-5" />
         </Link>

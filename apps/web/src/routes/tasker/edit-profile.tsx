@@ -18,7 +18,12 @@ export const EditProfile = () => {
     },
   });
 
-  useBackButton(true);
+  useBackButton({
+    show: true,
+    onClick() {
+      navigate("/tasker/profile");
+    },
+  });
   useMainButton({
     show: true,
     onClick() {
@@ -65,9 +70,10 @@ export const EditProfile = () => {
             onChange={(e) => setProfile(e.target.value)}
             id="profile"
             name="profile"
-            rows={6}
+            rows={10}
             placeholder="Write about your skills, experience and other details that will help you get more tasks."
             className="rounded-md border-none bg-background focus:ring-primary"
+            contentEditable
           />
         </div>
       </div>

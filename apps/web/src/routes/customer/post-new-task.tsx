@@ -15,20 +15,25 @@ export const PostNewTask = () => {
     },
   });
 
+  useBackButton({
+    show: true,
+    onClick() {
+      navigate(-1);
+    },
+  });
+
   useMainButton({
     show: true,
     onClick() {
-      if (title.length === 0 || description.length === 0) {
-        WebApp.showAlert("Please fill all the fields");
+      if (description.length === 0) {
+        WebApp.showAlert("Please provide a detailed description");
       } else {
-        postTaskMutation.mutate({ title, description });
+        postTaskMutation.mutate({ description });
       }
     },
     text: "Post new task",
   });
-  useBackButton(true);
 
-  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const navigate = useNavigate();
@@ -36,19 +41,6 @@ export const PostNewTask = () => {
   return (
     <MainLayout header="Post new task">
       <div className="space-y-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="title" className="text-hint">
-            Title
-          </label>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            id="title"
-            name="title"
-            placeholder="Short descriptive name for a task."
-            className="rounded-md border-none bg-background focus:ring-primary"
-          />
-        </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="description" className="text-hint">
             Description

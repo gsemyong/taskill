@@ -3,6 +3,7 @@ import { protectedProcedure, router } from "./trpc";
 import {
   addTask,
   deleteTask,
+  getPostedTask,
   getPostedTasks,
   getUser,
   searchTasks,
@@ -23,7 +24,6 @@ export const appRouter = router({
   postTask: protectedProcedure
     .input(
       z.object({
-        title: z.string(),
         description: z.string(),
       })
     )
@@ -31,7 +31,6 @@ export const appRouter = router({
       await addTask({
         customerId: ctx.user.id,
         description: input.description,
-        title: input.title,
       });
     }),
   deleteTask: protectedProcedure
@@ -78,6 +77,27 @@ export const appRouter = router({
       tasks,
     };
   }),
+  getTask: protectedProcedure
+    .input(
+      z.object({
+        taskId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const task = await getPostedTask({ taskId: input.taskId });
+
+      return {
+        task,
+      };
+    }),
+  createProposal: protectedProcedure
+    .input(
+      z.object({
+        note: z.string(),
+        taskId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {}),
 });
 
 export type AppRouter = typeof appRouter;

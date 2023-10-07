@@ -1,4 +1,4 @@
-import { db, users, tasks } from "db";
+import { db, users, tasks, proposals } from "db";
 import { and, eq, sql } from "drizzle-orm";
 import { searchDb, Task, Tasker, taskersSchema, tasksSchema } from "search-db";
 
@@ -20,18 +20,15 @@ export async function createUser({
 
 export async function addTask({
   customerId,
-  title,
   description,
 }: {
   customerId: number;
-  title: string;
   description: string;
 }) {
   const result = await db
     .insert(tasks)
     .values({
       customerId,
-      title,
       description,
     })
     .returning({
@@ -44,7 +41,6 @@ export async function addTask({
     {
       id: taskId,
       customer_id: customerId,
-      title,
       description,
     },
     {
@@ -166,7 +162,6 @@ export async function searchTasks(userId: number) {
   return hits?.map((hit) => ({
     taskId: hit.document.id,
     customerId: hit.document.customer_id,
-    title: hit.document.title,
     description: hit.document.description,
   }));
 }
@@ -175,7 +170,6 @@ export async function getPostedTasks(userId: number) {
   const postedTasks = await db.query.tasks.findMany({
     columns: {
       id: true,
-      title: true,
       description: true,
     },
     where: and(eq(tasks.customerId, userId), eq(tasks.status, "posted")),
@@ -207,4 +201,32 @@ export async function getUser({ userId }: { userId: number }) {
   }
 
   return user;
+}
+
+export async function getPostedTask({ taskId }: { taskId: string }) {
+  const task = await db.query.tasks.findFirst({
+    where: and(eq(tasks.id, taskId), eq(tasks.status, "posted")),
+  });
+
+  if (!task) {
+    throw new Error("No task found");
+  }
+
+  return task;
+}
+
+export async function createProposal({
+  note,
+  taskerId,
+  taskId,
+}: {
+  note: string;
+  taskerId: number;
+  taskId: string;
+}) {
+  await db.insert(proposals).values({
+    note,
+    taskerId,
+    taskId,
+  });
 }
