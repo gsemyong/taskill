@@ -1,8 +1,8 @@
 import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
+import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,13 +12,24 @@ export const EditProfile = () => {
   const setUserDataMutation = trpc.setUserData.useMutation({
     onSuccess: () => {
       utils.getUser.invalidate();
-      navigate("/tasker", {
+      navigate("/tasker/profile", {
         replace: true,
       });
     },
   });
 
   useBackButton(true);
+  useMainButton({
+    show: true,
+    onClick() {
+      if (fullName.length === 0 || profile.length === 0) {
+        WebApp.showAlert("Please fill all the fields");
+      } else {
+        setUserDataMutation.mutate({ fullName, profile });
+      }
+    },
+    text: "Save",
+  });
 
   const getUserQuery = trpc.getUser.useQuery();
 
@@ -59,19 +70,6 @@ export const EditProfile = () => {
             className="rounded-md border-none bg-background focus:ring-primary"
           />
         </div>
-        <button
-          onClick={() => {
-            if (fullName.length === 0 || profile.length === 0) {
-              WebApp.showAlert("Please fill all the fields");
-            } else {
-              setUserDataMutation.mutate({ fullName, profile });
-            }
-          }}
-          className="text-md flex w-full items-center justify-center gap-2 rounded-lg bg-primary p-2 font-medium text-primary-foreground"
-        >
-          <CheckCircleIcon className="h-5 w-5" />
-          Save
-        </button>
       </div>
     </MainLayout>
   );

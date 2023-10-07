@@ -1,6 +1,7 @@
 import Card from "@/components/card";
 import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
+import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
@@ -14,6 +15,10 @@ export const PostedTasks = () => {
     onSuccess: () => {
       utils.getPostedTasks.invalidate();
     },
+  });
+
+  useMainButton({
+    show: false,
   });
 
   return (

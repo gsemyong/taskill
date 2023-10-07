@@ -1,5 +1,6 @@
 import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
+import { useMainButton } from "@/hooks/use-main-button";
 import {
   BriefcaseIcon,
   ChatBubbleBottomCenterIcon,
@@ -11,6 +12,9 @@ import { Link } from "react-router-dom";
 
 export const CustomerDashobard = () => {
   useBackButton(false);
+  useMainButton({
+    show: false,
+  });
 
   return (
     <MainLayout

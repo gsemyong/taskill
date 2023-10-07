@@ -1,11 +1,15 @@
 import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
+import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
 export const MyProfile = () => {
   useBackButton(true);
+  useMainButton({
+    show: false,
+  });
 
   const getUserQuery = trpc.getUser.useQuery();
 
