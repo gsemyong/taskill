@@ -9,13 +9,6 @@ export const users = sqliteTable("users", {
   profile: text("profile"),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
-  customerTasks: many(tasks, {
-    relationName: "customer",
-  }),
-  taskerTasks: many(tasks),
-}));
-
 export const tasks = sqliteTable("tasks", {
   id: text("id")
     .primaryKey()
@@ -45,7 +38,11 @@ export const proposals = sqliteTable("proposals", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => createId()),
-  taskId: text("task_id").notNull(),
+  taskId: text("task_id")
+    .references(() => tasks.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
   taskerId: int("tasker_id").notNull(),
   note: text("note").notNull(),
 });

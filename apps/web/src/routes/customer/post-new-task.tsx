@@ -1,4 +1,3 @@
-import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
@@ -39,23 +38,21 @@ export const PostNewTask = () => {
   const navigate = useNavigate();
 
   return (
-    <MainLayout header="Post new task">
-      <div className="space-y-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="description" className="text-hint">
-            Description
-          </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            id="description"
-            name="description"
-            rows={6}
-            placeholder="Delails about the task. You can specify the location, urgency and other details here."
-            className="rounded-md border-none bg-background focus:ring-primary"
-          />
-        </div>
+    <div className="p-4">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="description" className="text-hint">
+          Description
+        </label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          id="description"
+          name="description"
+          rows={6}
+          placeholder="Delails about the task. You can specify the location, urgency and other details here."
+          className="rounded-md border-none bg-background focus:ring-primary"
+        />
       </div>
-    </MainLayout>
+    </div>
   );
 };

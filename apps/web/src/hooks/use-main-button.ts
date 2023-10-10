@@ -9,23 +9,23 @@ export function useMainButton({
   danger,
 }:
   | {
-      show: true;
+      show: boolean;
       text: string;
       onClick: () => void;
       danger?: boolean;
     }
   | {
       show: false;
-      text?: undefined;
-      onClick?: undefined;
-      danger?: undefined;
+      text?: string;
+      onClick?: () => void;
+      danger?: boolean;
     }) {
   useEffect(() => {
     if (show) {
       WebApp.MainButton.setText(text);
       if (danger) {
         WebApp.MainButton.setParams({
-          color: colors.red["500"],
+          color: colors.rose["500"],
         });
       } else {
         WebApp.MainButton.setParams({

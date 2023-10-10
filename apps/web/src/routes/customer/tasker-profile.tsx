@@ -1,14 +1,25 @@
 import Card from "@/components/card";
 import MainLayout from "@/components/main-layout";
+import { useBackButton } from "@/hooks/use-back-button";
 import { WebApp } from "@grammyjs/web-app";
 import { StarIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const TaskerProfile = () => {
   useEffect(() => {
     WebApp.MainButton.setText("Chat");
     WebApp.MainButton.show();
   }, []);
+
+  const navigate = useNavigate();
+
+  useBackButton({
+    show: true,
+    onClick() {
+      navigate(-1);
+    },
+  });
 
   return (
     <MainLayout header="John Doe">

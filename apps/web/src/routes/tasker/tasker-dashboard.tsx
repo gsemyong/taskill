@@ -1,11 +1,10 @@
-import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import {
   ChevronRightIcon,
   WrenchScrewdriverIcon,
   UserCircleIcon,
-  StarIcon,
+  BriefcaseIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -25,15 +24,16 @@ export const TaskerDashboard = () => {
   });
 
   return (
-    <MainLayout header="Tasker">
-      <div className="space-y-4">
+    <div className="p-4">
+      <div className="space-y-2">
+        <div className="text-hint">Tasker menu</div>
         <Link
-          to="/tasker/interesting"
+          to="/tasker/proposals"
           className="flex w-full items-center justify-between rounded-md bg-background p-4"
         >
           <span className="flex items-center gap-2">
-            <StarIcon className="h-5 w-5" />
-            Interesting tasks
+            <BriefcaseIcon className="h-5 w-5" />
+            Proposals
           </span>
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
@@ -58,6 +58,6 @@ export const TaskerDashboard = () => {
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
       </div>
-    </MainLayout>
+    </div>
   );
 };

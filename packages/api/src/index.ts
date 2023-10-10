@@ -1,3 +1,4 @@
+import { bot } from "bot";
 import { db, users, tasks, proposals } from "db";
 import { and, eq, sql } from "drizzle-orm";
 import { searchDb, Task, Tasker, taskersSchema, tasksSchema } from "search-db";
@@ -133,12 +134,12 @@ export async function searchTaskers(taskDescription: string) {
   }));
 }
 
-export async function searchTasks(userId: number) {
+export async function searchTasks(taskerId: number) {
   const user = await db.query.users.findFirst({
     columns: {
       profile: true,
     },
-    where: eq(users.id, userId),
+    where: eq(users.id, taskerId),
   });
 
   if (!user) {
@@ -148,6 +149,10 @@ export async function searchTasks(userId: number) {
   if (!user.profile) {
     throw new Error("No profile found");
   }
+
+  const taskerProposals = await getTaskerProposals({
+    taskerId: taskerId,
+  });
 
   const { hits } = await searchDb
     .collections<Task>(tasksSchema.name)
@@ -159,11 +164,21 @@ export async function searchTasks(userId: number) {
       per_page: 10,
     });
 
-  return hits?.map((hit) => ({
-    taskId: hit.document.id,
-    customerId: hit.document.customer_id,
-    description: hit.document.description,
-  }));
+  return hits
+    ?.map((hit) => ({
+      taskId: hit.document.id,
+      customerId: hit.document.customer_id,
+      description: hit.document.description,
+    }))
+    .filter((task) => {
+      if (
+        taskerProposals.find((proposal) => proposal.task.id === task.taskId)
+      ) {
+        return false;
+      }
+
+      return true;
+    });
 }
 
 export async function getPostedTasks(userId: number) {
@@ -229,4 +244,120 @@ export async function createProposal({
     taskerId,
     taskId,
   });
+}
+
+export async function getTaskerProposals({ taskerId }: { taskerId: number }) {
+  const taskerProposals = await db.query.proposals.findMany({
+    with: {
+      task: {
+        columns: {
+          id: true,
+          description: true,
+        },
+      },
+    },
+    columns: {
+      note: true,
+      id: true,
+    },
+    where: eq(proposals.taskerId, taskerId),
+  });
+
+  return taskerProposals;
+}
+
+export async function deleteProposal({
+  proposalId,
+  userId,
+}: {
+  proposalId: string;
+  userId: number;
+}) {
+  await db
+    .delete(proposals)
+    .where(and(eq(proposals.id, proposalId), eq(proposals.taskerId, userId)));
+}
+
+export async function getTaskProposals({
+  taskId,
+  userId,
+}: {
+  taskId: string;
+  userId: number;
+}) {
+  const taskProposals = await db.query.proposals.findMany({
+    with: {
+      tasker: {
+        columns: {
+          id: true,
+          fullName: true,
+        },
+      },
+    },
+    columns: {
+      id: true,
+      note: true,
+      taskId: true,
+    },
+    where: and(eq(proposals.taskId, taskId), eq(proposals.taskerId, userId)),
+  });
+
+  return taskProposals;
+}
+
+export async function getProposal({ proposalId }: { proposalId: string }) {
+  const proposal = await db.query.proposals.findFirst({
+    columns: {
+      note: true,
+    },
+    with: {
+      task: {
+        columns: {
+          description: true,
+        },
+      },
+      tasker: {
+        columns: {
+          id: true,
+          fullName: true,
+        },
+      },
+    },
+    where: eq(proposals.id, proposalId),
+  });
+
+  if (!proposal) {
+    throw new Error("No proposal found");
+  }
+
+  const taskerUsername = await getUsername({
+    userId: proposal.tasker.id,
+  });
+
+  return {
+    ...proposal,
+    taskerUsername,
+  };
+}
+
+export async function getUsername({ userId }: { userId: number }) {
+  const user = await db.query.users.findFirst({
+    columns: {
+      id: true,
+      chatId: true,
+    },
+    where: eq(users.id, userId),
+  });
+
+  if (!user) {
+    throw new Error("No user found");
+  }
+
+  const { user: chatUser } = await bot.api.getChatMember(user.chatId, userId);
+
+  if (!chatUser.username) {
+    throw new Error("No username found");
+  }
+
+  return chatUser.username;
 }

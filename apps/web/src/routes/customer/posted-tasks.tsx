@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import MainLayout from "@/components/main-layout";
+import Loading from "@/components/loading";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
@@ -24,21 +24,28 @@ export const PostedTasks = () => {
     text: "Add new task",
   });
 
+  if (getPostedTasksQuery.isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <MainLayout header="Posted tasks">
+    <div className="p-4">
       {getPostedTasksQuery.data?.tasks.length === 0 ? (
         <div className="text-hint">You have no posted tasks</div>
       ) : (
-        <div className="flex flex-col gap-4">
-          {getPostedTasksQuery.data?.tasks.map((task) => (
-            <Link key={task.id} to={`/customer/post/${task.id}`}>
-              <Card>
-                <div>{task.description}</div>
-              </Card>
-            </Link>
-          ))}
+        <div className="space-y-2">
+          <div className="text-hint">Posted tasks</div>
+          <div className="flex flex-col gap-2">
+            {getPostedTasksQuery.data?.tasks.map((task) => (
+              <Link key={task.id} to={`/customer/post/${task.id}`}>
+                <Card>
+                  <div>{task.description}</div>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
-    </MainLayout>
+    </div>
   );
 };

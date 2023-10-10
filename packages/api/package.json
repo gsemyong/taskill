@@ -5,6 +5,7 @@
   "types": "src/index.ts",
   "dependencies": {
     "db": "workspace:*",
+    "bot": "workspace:*",
     "search-db": "workspace:*",
     "drizzle-orm": "^0.28.6"
   },

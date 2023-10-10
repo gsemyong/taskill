@@ -46,8 +46,8 @@ export const EditProfile = () => {
   const navigate = useNavigate();
 
   return (
-    <MainLayout header="Edit profile">
-      <div className="space-y-4">
+    <div className="p-4">
+      <div className="space-y-2">
         <div className="flex flex-col gap-2">
           <label htmlFor="fullName" className="text-hint">
             Full name
@@ -77,6 +77,6 @@ export const EditProfile = () => {
           />
         </div>
       </div>
-    </MainLayout>
+    </div>
   );
 };

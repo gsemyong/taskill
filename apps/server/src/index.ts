@@ -1,10 +1,9 @@
 import "dotenv/config";
-import { bot } from "./bot";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 import fastify from "fastify";
 import { appRouter, createContext } from "trpc";
 import cors from "@fastify/cors";
-import { appsMenu } from "./menu";
+import { bot, appsMenu } from "bot";
 import { createUser } from "api";
 
 bot.api.setMyCommands([

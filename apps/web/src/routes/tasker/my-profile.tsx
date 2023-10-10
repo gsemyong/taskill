@@ -24,15 +24,15 @@ export const MyProfile = () => {
   const getUserQuery = trpc.getUser.useQuery();
 
   return (
-    <MainLayout header="Profile">
-      <div className="space-y-4">
-        <div className="text-lg font-medium text-hint">
+    <div className="p-4">
+      <div className="space-y-2">
+        <div className="text-lg font-medium">
           {getUserQuery.data?.user.fullName}
         </div>
         <div className="whitespace-pre-wrap rounded-md bg-background p-4">
           {getUserQuery.data?.user.profile}
         </div>
       </div>
-    </MainLayout>
+    </div>
   );
 };

@@ -2,9 +2,14 @@ import { initTRPC } from "@trpc/server";
 import { protectedProcedure, router } from "./trpc";
 import {
   addTask,
+  createProposal,
+  deleteProposal,
   deleteTask,
   getPostedTask,
   getPostedTasks,
+  getProposal,
+  getTaskProposals,
+  getTaskerProposals,
   getUser,
   searchTasks,
   setUserData,
@@ -97,7 +102,65 @@ export const appRouter = router({
         taskId: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {}),
+    .mutation(async ({ ctx, input }) => {
+      await createProposal({
+        taskerId: ctx.user.id,
+        note: input.note,
+        taskId: input.taskId,
+      });
+    }),
+  getTaskerProposals: protectedProcedure.query(async ({ ctx }) => {
+    const taskerProposals = await getTaskerProposals({
+      taskerId: ctx.user.id,
+    });
+
+    return {
+      proposals: taskerProposals,
+    };
+  }),
+  deleteProposal: protectedProcedure
+    .input(
+      z.object({
+        proposalId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await deleteProposal({
+        proposalId: input.proposalId,
+        userId: ctx.user.id,
+      });
+    }),
+  getTaskProposals: protectedProcedure
+    .input(
+      z.object({
+        taskId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const taskProposals = await getTaskProposals({
+        taskId: input.taskId,
+        userId: ctx.user.id,
+      });
+
+      return {
+        proposals: taskProposals,
+      };
+    }),
+  getProposal: protectedProcedure
+    .input(
+      z.object({
+        proposalId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const proposal = await getProposal({
+        proposalId: input.proposalId,
+      });
+
+      return {
+        proposal,
+      };
+    }),
 });
 
 export type AppRouter = typeof appRouter;

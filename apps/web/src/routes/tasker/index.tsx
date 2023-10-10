@@ -6,3 +6,4 @@ export { MyProfile } from "./my-profile";
 export { Root as TaskerRoot } from "./root";
 export { EditProfile } from "./edit-profile";
 export { MakeProposal } from "./make-proposal";
+export { Proposals as TaskerProposals } from "./proposals";

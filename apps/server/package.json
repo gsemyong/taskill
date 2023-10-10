@@ -10,6 +10,7 @@
     "@grammyjs/menu": "^1.2.1",
     "@t3-oss/env-core": "^0.6.1",
     "api": "workspace:*",
+    "bot": "workspace:*",
     "trpc": "workspace:*",
     "dotenv": "^16.3.1",
     "grammy": "^1.19.0",

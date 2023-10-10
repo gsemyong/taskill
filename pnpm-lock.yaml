@@ -87,6 +87,9 @@ importers:
       api:
         specifier: workspace:*
         version: link:../../packages/api
+      bot:
+        specifier: workspace:*
+        version: link:../../packages/bot
       dotenv:
         specifier: ^16.3.1
         version: 16.3.1
@@ -209,6 +212,9 @@ importers:
 
   packages/api:
     dependencies:
+      bot:
+        specifier: workspace:*
+        version: link:../bot
       db:
         specifier: workspace:*
         version: link:../db
@@ -218,6 +224,28 @@ importers:
       search-db:
         specifier: workspace:*
         version: link:../search-db
+    devDependencies:
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/bot:
+    dependencies:
+      '@epic-web/remember':
+        specifier: ^1.0.2
+        version: 1.0.2
+      '@grammyjs/menu':
+        specifier: ^1.2.1
+        version: 1.2.1(grammy@1.19.0)
+      '@t3-oss/env-core':
+        specifier: ^0.6.1
+        version: 0.6.1(typescript@5.2.2)(zod@3.22.2)
+      grammy:
+        specifier: ^1.19.0
+        version: 1.19.0
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
     devDependencies:
       tsconfig:
         specifier: workspace:*

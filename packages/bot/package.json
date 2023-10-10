@@ -1,0 +1,16 @@
+{
+  "name": "bot",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@epic-web/remember": "^1.0.2",
+    "@grammyjs/menu": "^1.2.1",
+    "@t3-oss/env-core": "^0.6.1",
+    "grammy": "^1.19.0",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
+  }
+}

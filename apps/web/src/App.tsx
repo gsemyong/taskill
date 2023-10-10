@@ -10,9 +10,10 @@ import {
   InterestedTaskers,
   PostNewTask,
   PostedTasks,
-  Proposals,
+  CustomerProposals,
   Task,
   TaskerProfile,
+  CustomerProposal,
 } from "./routes/customer";
 import {
   DiscoverTasks,
@@ -22,6 +23,7 @@ import {
   MyProfile,
   TaskerDashboard,
   TaskerOngoingTasks,
+  TaskerProposals,
   TaskerRoot,
 } from "./routes/tasker";
 import { Root } from "./routes/root";
@@ -62,6 +64,10 @@ const router = createBrowserRouter([
             path: "proposal/:taskId",
             element: <MakeProposal />,
           },
+          {
+            path: "proposals",
+            element: <TaskerProposals />,
+          },
         ],
       },
       {
@@ -81,7 +87,7 @@ const router = createBrowserRouter([
           },
           {
             path: "proposals",
-            element: <Proposals />,
+            element: <CustomerProposals />,
           },
           {
             path: "ongoing",
@@ -99,6 +105,10 @@ const router = createBrowserRouter([
             path: "post/:taskId",
             element: <Task />,
           },
+          {
+            path: "proposal/:proposalId",
+            element: <CustomerProposal />,
+          },
         ],
       },
     ],
@@ -111,7 +121,7 @@ const App = () => {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: "https://6336-62-168-118-250.ngrok-free.app/trpc",
+          url: "https://5f67-62-168-118-250.ngrok-free.app/trpc",
           headers: {
             "ngrok-skip-browser-warning": "true",
             "init-data": WebApp.initData,
