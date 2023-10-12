@@ -1,47 +1,44 @@
 import Card from "@/components/card";
-import MainLayout from "@/components/main-layout";
-import { WebApp } from "@grammyjs/web-app";
-import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import Loading from "@/components/loading";
+import { useBackButton } from "@/hooks/use-back-button";
+import { useMainButton } from "@/hooks/use-main-button";
+import { trpc } from "@/lib/trpc";
+import { Link, useNavigate } from "react-router-dom";
 
 export const OngoingTasks = () => {
-  useEffect(() => {
-    WebApp.BackButton.show();
+  const navigate = useNavigate();
+  useBackButton({
+    show: true,
+    onClick() {
+      navigate("/customer");
+    },
+  });
+  useMainButton({
+    show: false,
+  });
 
-    WebApp.MainButton.hide();
-  }, []);
+  const getOnoingTasksQuery = trpc.getOngoingTasks.useQuery();
+
+  if (getOnoingTasksQuery.isLoading) {
+    return <Loading />;
+  }
 
   return (
-    <MainLayout header="Ongoing tasks (1)">
-      <div className="space-y-4">
-        <Card>
-          <div className="text-lg font-semibold">House cleaning</div>
-          <div className="text-hint">
-            Clean all the house after renovation. The house is 100 square
-            meters. The cleaning should be done on 1st of May.
+    <div className="p-4">
+      {getOnoingTasksQuery.data?.tasks.length === 0 ? (
+        <div className="text-hint">You have no ongoing tasks</div>
+      ) : (
+        <div className="space-y-2">
+          <div className="text-hint">Ongoing tasks</div>
+          <div className="flex flex-col gap-2">
+            {getOnoingTasksQuery.data?.tasks.map((task) => (
+              <Link to={`/customer/ongoing/${task.id}`}>
+                <Card>{task.description}</Card>
+              </Link>
+            ))}
           </div>
-          <Link
-            to="/customer/tasker/1"
-            className="space-y-2 rounded-md bg-secondary-background p-4"
-          >
-            <div className="text-lg font-semibold">John Doe</div>
-            <div className="text-hint">
-              I'm ready to do this task for you. The price is 100 euro, the
-              duration is 2 hours.
-            </div>
-          </Link>
-          <div className="flex gap-2 self-end">
-            <button className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-primary-foreground">
-              <ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
-              Chat
-            </button>
-            <button className="flex items-center gap-2 rounded-md bg-rose-600 px-4 py-2 text-white">
-              Cancel
-            </button>
-          </div>
-        </Card>
-      </div>
-    </MainLayout>
+        </div>
+      )}
+    </div>
   );
 };

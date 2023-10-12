@@ -35,7 +35,7 @@ export const DiscoverTasks = () => {
         <div className="flex flex-col gap-2">
           <div className="text-hint">Tasks for you</div>
           {discoverTasksQuery.data?.tasks.map((task) => (
-            <Link to={`/tasker/proposal/${task.taskId}`}>
+            <Link to={`/tasker/make-proposal/${task.taskId}`}>
               <Card>
                 <div>{task.description}</div>
               </Card>

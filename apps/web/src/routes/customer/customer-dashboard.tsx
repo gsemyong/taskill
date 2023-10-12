@@ -1,7 +1,6 @@
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import {
-  BriefcaseIcon,
   ChatBubbleBottomCenterIcon,
   ChevronRightIcon,
   WrenchScrewdriverIcon,
@@ -35,16 +34,6 @@ export const CustomerDashobard = () => {
             <span className="flex items-center gap-2">
               <ChatBubbleBottomCenterIcon className="h-5 w-5" />
               Posted tasks
-            </span>
-            <ChevronRightIcon className="h-5 w-5" />
-          </Link>
-          <Link
-            to="/customer/proposals"
-            className="flex w-full items-center justify-between rounded-md bg-background p-4"
-          >
-            <span className="flex items-center gap-2">
-              <BriefcaseIcon className="h-5 w-5" />
-              Proposals from taskers
             </span>
             <ChevronRightIcon className="h-5 w-5" />
           </Link>

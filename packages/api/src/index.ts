@@ -361,3 +361,71 @@ export async function getUsername({ userId }: { userId: number }) {
 
   return chatUser.username;
 }
+
+export async function acceptProposal({ proposalId }: { proposalId: string }) {
+  db.transaction(async (tx) => {
+    const proposal = await tx.query.proposals.findFirst({
+      where: eq(proposals.id, proposalId),
+    });
+
+    if (!proposal) {
+      throw new Error("No proposal found");
+    }
+
+    await tx.delete(proposals).where(eq(proposals.taskId, proposal.taskId));
+    await searchDb
+      .collections<Task>(tasksSchema.name)
+      .documents()
+      .delete(proposal.taskId);
+    await tx
+      .update(tasks)
+      .set({ taskerId: proposal.taskerId, status: "ongoing" })
+      .where(eq(tasks.id, proposal.taskId));
+  });
+}
+
+export async function getOngoingTasks({ userId }: { userId: number }) {
+  const ongoingTasks = await db.query.tasks.findMany({
+    with: {
+      tasker: {
+        columns: {
+          id: true,
+          fullName: true,
+        },
+      },
+    },
+    columns: {
+      id: true,
+      description: true,
+    },
+    where: and(eq(tasks.customerId, userId), eq(tasks.status, "ongoing")),
+  });
+
+  return ongoingTasks;
+}
+
+export async function getOngoingTask({ taskId }: { taskId: string }) {
+  const ongoingTask = await db.query.tasks.findFirst({
+    where: eq(tasks.id, taskId),
+  });
+
+  if (!ongoingTask) {
+    throw new Error("No ongoing task found");
+  }
+
+  const taskerUsername = await getUsername({
+    userId: ongoingTask.taskerId!,
+  });
+
+  return {
+    task: {
+      description: ongoingTask.description,
+      taskerId: ongoingTask.taskerId!,
+      taskerUsername,
+    },
+  };
+}
+
+export async function cancelTask({ taskId }: { taskId: string }) {
+  await db.delete(tasks).where(eq(tasks.id, taskId));
+}

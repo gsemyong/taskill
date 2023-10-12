@@ -1,18 +1,18 @@
 import Card from "@/components/card";
-import MainLayout from "@/components/main-layout";
+import Loading from "@/components/loading";
 import { useBackButton } from "@/hooks/use-back-button";
-import { WebApp } from "@grammyjs/web-app";
-import { StarIcon } from "@heroicons/react/24/outline";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMainButton } from "@/hooks/use-main-button";
+import { trpc } from "@/lib/trpc";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const TaskerProfile = () => {
-  useEffect(() => {
-    WebApp.MainButton.setText("Chat");
-    WebApp.MainButton.show();
-  }, []);
-
   const navigate = useNavigate();
+
+  const params = useParams();
+  const taskerId = parseInt(params["taskerId"]!);
+  const getTaskerQuery = trpc.getTasker.useQuery({
+    taskerId,
+  });
 
   useBackButton({
     show: true,
@@ -21,18 +21,33 @@ export const TaskerProfile = () => {
     },
   });
 
+  useMainButton({
+    show: !getTaskerQuery.isLoading,
+    onClick() {
+      document.getElementById("chat")?.click();
+    },
+    text: "Chat",
+  });
+
+  if (getTaskerQuery.isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <MainLayout header="John Doe">
+    <div className="p-4">
       <div className="space-y-4">
+        <div className="text-lg font-medium">
+          {getTaskerQuery.data?.tasker.fullName}
+        </div>
         <div className="space-y-2">
           <div className="text-hint">Profile</div>
           <Card>
-            I am qualified construction worker with 10 years of experience. I
-            also am capable of assembling furniture. My prices are fair and I am
-            always on time.
+            <div className="whitespace-pre-wrap">
+              {getTaskerQuery.data?.tasker.profile}
+            </div>
           </Card>
         </div>
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <div className="text-hint">Reviews</div>
           <Card>
             <div className="flex gap-1">
@@ -45,8 +60,9 @@ export const TaskerProfile = () => {
             John was on time, but the speed of his work was not as fast as I
             expected. The price was fair.
           </Card>
-        </div>
+        </div> */}
       </div>
-    </MainLayout>
+      <a className="hidden" id="chat" href="http://t.me/gsemyong/" />
+    </div>
   );
 };

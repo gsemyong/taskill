@@ -3,6 +3,7 @@ import Loading from "@/components/loading";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
+import { WebApp } from "@grammyjs/web-app";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -11,6 +12,17 @@ export const Proposal = () => {
   const proposalId = params["proposalId"]!;
   const proposalQuery = trpc.getProposal.useQuery({
     proposalId,
+  });
+
+  const deleteProposalMutation = trpc.deleteProposal.useMutation({
+    onSuccess() {
+      navigate(-1);
+    },
+  });
+  const acceptProposalMutation = trpc.acceptProposal.useMutation({
+    onSuccess() {
+      navigate("/customer/ongoing");
+    },
   });
 
   const navigate = useNavigate();
@@ -24,9 +36,9 @@ export const Proposal = () => {
   useMainButton({
     show: !proposalQuery.isLoading,
     onClick() {
-      document.getElementById("chatWithTasker")?.click();
+      document.getElementById("chat")?.click();
     },
-    text: "Chat with tasker",
+    text: "Chat",
   });
 
   if (proposalQuery.isLoading) {
@@ -46,7 +58,7 @@ export const Proposal = () => {
             <div>{proposalQuery.data?.proposal.note}</div>
             <Link
               className="text-link"
-              to={`/tasker/${proposalQuery.data?.proposal.tasker.id}`}
+              to={`/customer/tasker/${proposalQuery.data?.proposal.tasker.id}`}
             >
               {proposalQuery.data?.proposal.tasker.fullName}
             </Link>
@@ -58,13 +70,35 @@ export const Proposal = () => {
           </div>
           <div className="flex gap-2">
             <button
-              onClick={() => {}}
+              onClick={() => {
+                WebApp.showConfirm(
+                  "Are you sure you want to accept this proposal?",
+                  (ok) => {
+                    if (ok) {
+                      acceptProposalMutation.mutate({
+                        proposalId,
+                      });
+                    }
+                  },
+                );
+              }}
               className="flex w-full items-center justify-center gap-2 rounded-md bg-primary py-2 text-center text-primary-foreground"
             >
               <CheckIcon className="h-5 w-5" />
             </button>
             <button
-              onClick={() => {}}
+              onClick={() => {
+                WebApp.showConfirm(
+                  "Are you sure you want to decline this proposal?",
+                  (ok) => {
+                    if (ok) {
+                      deleteProposalMutation.mutate({
+                        proposalId,
+                      });
+                    }
+                  },
+                );
+              }}
               className="flex w-full items-center justify-center gap-2 rounded-md bg-rose-500 py-2 text-center text-primary-foreground"
             >
               <XMarkIcon className="h-5 w-5" />
@@ -72,11 +106,7 @@ export const Proposal = () => {
           </div>
         </div>
       </div>
-      <a
-        className="hidden"
-        id="chatWithTasker"
-        href="http://t.me/gsemyong/"
-      ></a>
+      <a className="hidden" id="chat" href="http://t.me/gsemyong/" />
     </div>
   );
 };

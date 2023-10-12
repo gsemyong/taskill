@@ -1,16 +1,21 @@
 import { initTRPC } from "@trpc/server";
 import { protectedProcedure, router } from "./trpc";
 import {
+  acceptProposal,
   addTask,
+  cancelTask,
   createProposal,
   deleteProposal,
   deleteTask,
+  getOngoingTask,
+  getOngoingTasks,
   getPostedTask,
   getPostedTasks,
   getProposal,
   getTaskProposals,
   getTaskerProposals,
   getUser,
+  getUsername,
   searchTasks,
   setUserData,
 } from "api";
@@ -160,6 +165,71 @@ export const appRouter = router({
       return {
         proposal,
       };
+    }),
+  getTasker: protectedProcedure
+    .input(
+      z.object({
+        taskerId: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      const tasker = await getUser({
+        userId: input.taskerId,
+      });
+
+      const taskerUsername = await getUsername({ userId: input.taskerId });
+
+      return {
+        tasker: {
+          fullName: tasker.fullName!,
+          profile: tasker.profile!,
+          username: taskerUsername,
+        },
+      };
+    }),
+  acceptProposal: protectedProcedure
+    .input(
+      z.object({
+        proposalId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await acceptProposal({
+        proposalId: input.proposalId,
+      });
+    }),
+  getOngoingTasks: protectedProcedure.query(async ({ ctx }) => {
+    const tasks = await getOngoingTasks({
+      userId: ctx.user.id,
+    });
+
+    return {
+      tasks,
+    };
+  }),
+  getOngoingTask: protectedProcedure
+    .input(
+      z.object({
+        taskId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const task = await getOngoingTask({
+        taskId: input.taskId,
+      });
+
+      return task;
+    }),
+  cancelTask: protectedProcedure
+    .input(
+      z.object({
+        taskId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await cancelTask({
+        taskId: input.taskId,
+      });
     }),
 });
 

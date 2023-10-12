@@ -23,6 +23,7 @@ export function useMainButton({
   useEffect(() => {
     if (show) {
       WebApp.MainButton.setText(text);
+      WebApp.MainButton.onClick(onClick);
       if (danger) {
         WebApp.MainButton.setParams({
           color: colors.rose["500"],
@@ -32,7 +33,6 @@ export function useMainButton({
           color: WebApp.themeParams.button_color,
         });
       }
-      WebApp.MainButton.onClick(onClick);
       WebApp.MainButton.show();
     } else {
       WebApp.MainButton.hide();
