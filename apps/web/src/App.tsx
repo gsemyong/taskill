@@ -22,6 +22,7 @@ import {
   MakeProposal,
   MyProfile,
   TaskerDashboard,
+  TaskerOngoingTask,
   TaskerOngoingTasks,
   TaskerProposal,
   TaskerProposals,
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
           {
             path: "ongoing",
             element: <TaskerOngoingTasks />,
+          },
+          {
+            path: "ongoing/:taskId",
+            element: <TaskerOngoingTask />,
           },
           {
             path: "profile",

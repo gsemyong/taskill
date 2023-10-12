@@ -13,6 +13,8 @@ import {
   getPostedTasks,
   getProposal,
   getTaskProposals,
+  getTaskerOngoingTask,
+  getTaskerOngoingTasks,
   getTaskerProposals,
   getUser,
   getUsername,
@@ -230,6 +232,28 @@ export const appRouter = router({
       await cancelTask({
         taskId: input.taskId,
       });
+    }),
+  getTaskerOngoingTasks: protectedProcedure.query(async ({ ctx }) => {
+    const tasks = await getTaskerOngoingTasks({
+      taskerId: ctx.user.id,
+    });
+
+    return {
+      tasks,
+    };
+  }),
+  getTaskerOngoingTask: protectedProcedure
+    .input(
+      z.object({
+        taskId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const task = await getTaskerOngoingTask({
+        taskId: input.taskId,
+      });
+
+      return task;
     }),
 });
 

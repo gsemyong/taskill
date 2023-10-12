@@ -1,4 +1,3 @@
-import defaultTheme from "tailwindcss/defaultTheme";
 import forms from "@tailwindcss/forms";
 
 /** @type {import('tailwindcss').Config} */
@@ -14,9 +13,6 @@ export default {
         primary: "rgb(var(--tg-theme-button-color))",
         "primary-foreground": "rgb(var(--tg-theme-button-text-color))",
         "secondary-background": "rgb(var(--tg-theme-secondary-bg-color))",
-      },
-      fontFamily: {
-        sans: ["Bricolage Grotesque Variable", ...defaultTheme.fontFamily.sans],
       },
     },
   },

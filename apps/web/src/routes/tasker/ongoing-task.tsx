@@ -4,18 +4,17 @@ import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
-import { ChevronRightIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const OngoingTask = () => {
   const params = useParams();
   const taskId = params["taskId"]!;
-  const getOngoingTaskQuery = trpc.getOngoingTask.useQuery({
+  const getTaskerOngoingTaskQuery = trpc.getTaskerOngoingTask.useQuery({
     taskId,
   });
   const cancelTaskMutation = trpc.cancelTask.useMutation({
     onSuccess() {
-      navigate("/customer/ongoing");
+      navigate("/tasker/ongoing");
     },
   });
 
@@ -24,7 +23,7 @@ export const OngoingTask = () => {
   useBackButton({
     show: true,
     onClick() {
-      navigate("/customer/ongoing");
+      navigate("/tasker/ongoing");
     },
   });
 
@@ -36,7 +35,7 @@ export const OngoingTask = () => {
     text: "Chat",
   });
 
-  if (getOngoingTaskQuery.isLoading) {
+  if (getTaskerOngoingTaskQuery.isLoading) {
     return <Loading />;
   }
 
@@ -45,20 +44,27 @@ export const OngoingTask = () => {
       <div className="flex flex-col gap-4">
         <div className="space-y-2">
           <div className="text-hint">Task</div>
-          <Card>{getOngoingTaskQuery.data?.task.description}</Card>
+          <Card>{getTaskerOngoingTaskQuery.data?.task.description}</Card>
         </div>
         <div className="space-y-2">
           <div className="text-hint">Actions</div>
-          <Link
-            to={`/customer/tasker/${getOngoingTaskQuery.data?.task.taskerId}`}
-            className="flex w-full items-center justify-between rounded-md bg-background p-4"
+          <button
+            onClick={() => {
+              WebApp.showConfirm(
+                "Are you sure you want to cancel this task?",
+                async (ok) => {
+                  if (ok) {
+                    cancelTaskMutation.mutate({
+                      taskId,
+                    });
+                  }
+                },
+              );
+            }}
+            className="w-full rounded-md bg-primary py-2 text-center text-primary-foreground"
           >
-            <span className="flex items-center gap-2">
-              <UserCircleIcon className="h-5 w-5" />
-              View tasker profile
-            </span>
-            <ChevronRightIcon className="h-5 w-5" />
-          </Link>
+            Finish task
+          </button>
           <button
             onClick={() => {
               WebApp.showConfirm(

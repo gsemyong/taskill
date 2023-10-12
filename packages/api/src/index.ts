@@ -429,3 +429,40 @@ export async function getOngoingTask({ taskId }: { taskId: string }) {
 export async function cancelTask({ taskId }: { taskId: string }) {
   await db.delete(tasks).where(eq(tasks.id, taskId));
 }
+
+export async function getTaskerOngoingTasks({
+  taskerId,
+}: {
+  taskerId: number;
+}) {
+  const ongoingTasks = await db.query.tasks.findMany({
+    columns: {
+      id: true,
+      description: true,
+    },
+    where: and(eq(tasks.taskerId, taskerId), eq(tasks.status, "ongoing")),
+  });
+
+  return ongoingTasks;
+}
+
+export async function getTaskerOngoingTask({ taskId }: { taskId: string }) {
+  const ongoingTask = await db.query.tasks.findFirst({
+    where: eq(tasks.id, taskId),
+  });
+
+  if (!ongoingTask) {
+    throw new Error("No ongoing task found");
+  }
+
+  const customerUsername = await getUsername({
+    userId: ongoingTask.customerId!,
+  });
+
+  return {
+    task: {
+      description: ongoingTask.description,
+      customerUsername,
+    },
+  };
+}
