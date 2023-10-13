@@ -9,3 +9,4 @@ export { MakeProposal } from "./make-proposal";
 export { Proposals as TaskerProposals } from "./proposals";
 export { Proposal as TaskerProposal } from "./proposal";
 export { OngoingTask as TaskerOngoingTask } from "./ongoing-task";
+export { FinishedTasks as TaskerFinishedTasks } from "./finished-tasks";

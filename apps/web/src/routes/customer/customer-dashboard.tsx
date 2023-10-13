@@ -2,6 +2,7 @@ import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import {
   ChatBubbleBottomCenterIcon,
+  CheckCircleIcon,
   ChevronRightIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
@@ -44,6 +45,16 @@ export const CustomerDashobard = () => {
             <span className="flex items-center gap-2">
               <WrenchScrewdriverIcon className="h-5 w-5" />
               Ongoing tasks
+            </span>
+            <ChevronRightIcon className="h-5 w-5" />
+          </Link>
+          <Link
+            to="/customer/finished"
+            className="flex w-full items-center justify-between rounded-md bg-background p-4"
+          >
+            <span className="flex items-center gap-2">
+              <CheckCircleIcon className="h-5 w-5" />
+              Finished tasks
             </span>
             <ChevronRightIcon className="h-5 w-5" />
           </Link>

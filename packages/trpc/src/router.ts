@@ -7,12 +7,15 @@ import {
   createProposal,
   deleteProposal,
   deleteTask,
+  finishTask,
+  getFinishedTasks,
   getOngoingTask,
   getOngoingTasks,
   getPostedTask,
   getPostedTasks,
   getProposal,
   getTaskProposals,
+  getTaskerFinishedTasks,
   getTaskerOngoingTask,
   getTaskerOngoingTasks,
   getTaskerProposals,
@@ -233,6 +236,17 @@ export const appRouter = router({
         taskId: input.taskId,
       });
     }),
+  finishTask: protectedProcedure
+    .input(
+      z.object({
+        taskId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await finishTask({
+        taskId: input.taskId,
+      });
+    }),
   getTaskerOngoingTasks: protectedProcedure.query(async ({ ctx }) => {
     const tasks = await getTaskerOngoingTasks({
       taskerId: ctx.user.id,
@@ -255,6 +269,24 @@ export const appRouter = router({
 
       return task;
     }),
+  getTaskerFinishedTasks: protectedProcedure.query(async ({ ctx }) => {
+    const tasks = await getTaskerFinishedTasks({
+      taskerId: ctx.user.id,
+    });
+
+    return {
+      tasks,
+    };
+  }),
+  getFinishedTasks: protectedProcedure.query(async ({ ctx }) => {
+    const tasks = await getFinishedTasks({
+      userId: ctx.user.id,
+    });
+
+    return {
+      tasks,
+    };
+  }),
 });
 
 export type AppRouter = typeof appRouter;

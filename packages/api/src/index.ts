@@ -466,3 +466,40 @@ export async function getTaskerOngoingTask({ taskId }: { taskId: string }) {
     },
   };
 }
+
+export async function finishTask({ taskId }: { taskId: string }) {
+  await db
+    .update(tasks)
+    .set({
+      status: "finished",
+    })
+    .where(eq(tasks.id, taskId));
+}
+
+export async function getTaskerFinishedTasks({
+  taskerId,
+}: {
+  taskerId: number;
+}) {
+  const finishedTasks = await db.query.tasks.findMany({
+    where: and(eq(tasks.taskerId, taskerId), eq(tasks.status, "finished")),
+  });
+
+  return finishedTasks;
+}
+
+export async function getFinishedTasks({ userId }: { userId: number }) {
+  const finishedTasks = await db.query.tasks.findMany({
+    with: {
+      tasker: {
+        columns: {
+          id: true,
+          fullName: true,
+        },
+      },
+    },
+    where: and(eq(tasks.customerId, userId), eq(tasks.status, "finished")),
+  });
+
+  return finishedTasks;
+}

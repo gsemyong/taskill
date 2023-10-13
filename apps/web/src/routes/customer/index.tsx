@@ -7,3 +7,4 @@ export { TaskerProfile } from "./tasker-profile";
 export { Task } from "./task";
 export { Proposal as CustomerProposal } from "./proposal";
 export { OngoingTask as CustomerOngoingTask } from "./ongoing-task";
+export { FinishedTasks as CustomerFinishedTasks } from "./finished-tasks";

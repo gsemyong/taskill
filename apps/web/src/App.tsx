@@ -14,6 +14,7 @@ import {
   TaskerProfile,
   CustomerProposal,
   CustomerOngoingTask,
+  CustomerFinishedTasks,
 } from "./routes/customer";
 import {
   DiscoverTasks,
@@ -22,6 +23,7 @@ import {
   MakeProposal,
   MyProfile,
   TaskerDashboard,
+  TaskerFinishedTasks,
   TaskerOngoingTask,
   TaskerOngoingTasks,
   TaskerProposal,
@@ -78,6 +80,10 @@ const router = createBrowserRouter([
             path: "proposals",
             element: <TaskerProposals />,
           },
+          {
+            path: "finished",
+            element: <TaskerFinishedTasks />,
+          },
         ],
       },
       {
@@ -118,6 +124,10 @@ const router = createBrowserRouter([
           {
             path: "proposal/:proposalId",
             element: <CustomerProposal />,
+          },
+          {
+            path: "finished",
+            element: <CustomerFinishedTasks />,
           },
         ],
       },

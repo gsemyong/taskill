@@ -17,6 +17,11 @@ export const OngoingTask = () => {
       navigate("/tasker/ongoing");
     },
   });
+  const finishTaskMutation = trpc.finishTask.useMutation({
+    onSuccess() {
+      navigate("/tasker/ongoing");
+    },
+  });
 
   const navigate = useNavigate();
 
@@ -51,10 +56,10 @@ export const OngoingTask = () => {
           <button
             onClick={() => {
               WebApp.showConfirm(
-                "Are you sure you want to cancel this task?",
+                "Are you sure you want to mark this task as finished?",
                 async (ok) => {
                   if (ok) {
-                    cancelTaskMutation.mutate({
+                    finishTaskMutation.mutate({
                       taskId,
                     });
                   }
