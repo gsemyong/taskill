@@ -6,16 +6,13 @@ import { trpc } from "@/lib/trpc";
 import { Link, useNavigate } from "react-router-dom";
 
 export const PostedTasks = () => {
+  const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
       navigate("/customer");
     },
   });
-  const getPostedTasksQuery = trpc.getPostedTasks.useQuery();
-
-  const navigate = useNavigate();
-
   useMainButton({
     show: true,
     onClick() {
@@ -23,6 +20,8 @@ export const PostedTasks = () => {
     },
     text: "Add new task",
   });
+
+  const getPostedTasksQuery = trpc.getPostedTasks.useQuery();
 
   if (getPostedTasksQuery.isLoading) {
     return <Loading />;

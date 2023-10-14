@@ -5,15 +5,8 @@ import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const PostNewTask = () => {
-  const postTaskMutation = trpc.postTask.useMutation({
-    onSuccess: () => {
-      navigate("/customer/posted", {
-        replace: true,
-      });
-    },
-  });
-
+export const NewTask = () => {
+  const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
@@ -33,9 +26,15 @@ export const PostNewTask = () => {
     text: "Post new task",
   });
 
-  const [description, setDescription] = useState("");
+  const postTaskMutation = trpc.postTask.useMutation({
+    onSuccess: () => {
+      navigate("/customer/posted", {
+        replace: true,
+      });
+    },
+  });
 
-  const navigate = useNavigate();
+  const [description, setDescription] = useState("");
 
   return (
     <div className="p-4">

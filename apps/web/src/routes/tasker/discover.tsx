@@ -5,16 +5,14 @@ import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { Link, useNavigate } from "react-router-dom";
 
-export const DiscoverTasks = () => {
+export const Discover = () => {
   const navigate = useNavigate();
-
   useBackButton({
     show: true,
     onClick() {
       navigate("/tasker");
     },
   });
-
   useMainButton({
     show: false,
   });

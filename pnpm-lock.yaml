@@ -151,6 +151,9 @@ importers:
       react-router-dom:
         specifier: ^6.16.0
         version: 6.16.0(react-dom@18.2.0)(react@18.2.0)
+      react-router-typesafe-routes:
+        specifier: ^1.2.1
+        version: 1.2.1(react-router-dom@6.16.0)(react@18.2.0)(zod@3.22.2)
       tailwind-merge:
         specifier: ^1.14.0
         version: 1.14.0
@@ -2996,6 +2999,30 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-router: 6.16.0(react@18.2.0)
+    dev: false
+
+  /react-router-typesafe-routes@1.2.1(react-router-dom@6.16.0)(react@18.2.0)(zod@3.22.2):
+    resolution: {integrity: sha512-MJS6UMbOgZkrA9TExhjlle2XzhMql6Rh5gOHpBMQwggO2SXw+wRHO6lXgcTpQTm0046GH0jfTT/HmD5EJbxojw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+      react-router-dom: ^6.7.0
+      react-router-native: ^6.7.0
+      yup: ^1.0.0
+      zod: ^3.0.0
+    peerDependenciesMeta:
+      react-router-dom:
+        optional: true
+      react-router-native:
+        optional: true
+      yup:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-router-dom: 6.16.0(react-dom@18.2.0)(react@18.2.0)
+      zod: 3.22.2
     dev: false
 
   /react-router@6.16.0(react@18.2.0):

@@ -1,37 +1,24 @@
+import { useTypedParams } from "react-router-typesafe-routes/dom";
 import Card from "@/components/card";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
-export const Task = () => {
-  const navigate = useNavigate();
-
-  const params = useParams();
-  const taskId = params["taskId"]!;
-
+export const PostedTask = () => {
+  const { taskId } = useTypedParams(ROUTES.CUSTOMER.POSTED_TASK);
   const getTaskQuery = trpc.getTask.useQuery({
     taskId,
   });
-
   const getTaskProposals = trpc.getTaskProposals.useQuery({
     taskId,
   });
 
   const loading = getTaskQuery.isLoading || getTaskProposals.isLoading;
 
-  const utils = trpc.useContext();
-
-  const deleteTaskMutation = trpc.deleteTask.useMutation({
-    onSuccess: () => {
-      utils.getPostedTasks.invalidate();
-      navigate("/customer/posted", {
-        replace: true,
-      });
-    },
-  });
-
+  const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
@@ -52,6 +39,16 @@ export const Task = () => {
     },
     text: "Delete task",
     danger: true,
+  });
+
+  const utils = trpc.useContext();
+  const deleteTaskMutation = trpc.deleteTask.useMutation({
+    onSuccess: () => {
+      utils.getPostedTasks.invalidate();
+      navigate("/customer/posted", {
+        replace: true,
+      });
+    },
   });
 
   if (loading) {

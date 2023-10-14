@@ -1,12 +1,10 @@
-import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { useNavigate } from "react-router-dom";
 
-export const MyProfile = () => {
+export const Profile = () => {
   const navigate = useNavigate();
-
   useBackButton({
     show: true,
     onClick() {

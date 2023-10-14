@@ -6,20 +6,18 @@ import { trpc } from "@/lib/trpc";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Proposals = () => {
-  const getTaskerProposals = trpc.getTaskerProposals.useQuery();
-
   const navigate = useNavigate();
-
   useBackButton({
     show: true,
     onClick() {
       navigate("/tasker");
     },
   });
-
   useMainButton({
     show: false,
   });
+
+  const getTaskerProposals = trpc.getTaskerProposals.useQuery();
 
   if (getTaskerProposals.isLoading) {
     return <Loading />;

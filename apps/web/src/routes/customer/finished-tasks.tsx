@@ -6,20 +6,18 @@ import { trpc } from "@/lib/trpc";
 import { Link, useNavigate } from "react-router-dom";
 
 export const FinishedTasks = () => {
-  const getFinishedTasksQuery = trpc.getFinishedTasks.useQuery();
-
   const navigate = useNavigate();
-
   useBackButton({
     show: true,
     onClick() {
       navigate("/customer");
     },
   });
-
   useMainButton({
     show: false,
   });
+
+  const getFinishedTasksQuery = trpc.getFinishedTasks.useQuery();
 
   if (getFinishedTasksQuery.isLoading) {
     return <Loading />;

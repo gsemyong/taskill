@@ -7,24 +7,7 @@ import { WebApp } from "@grammyjs/web-app";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const OngoingTask = () => {
-  const params = useParams();
-  const taskId = params["taskId"]!;
-  const getTaskerOngoingTaskQuery = trpc.getTaskerOngoingTask.useQuery({
-    taskId,
-  });
-  const cancelTaskMutation = trpc.cancelTask.useMutation({
-    onSuccess() {
-      navigate("/tasker/ongoing");
-    },
-  });
-  const finishTaskMutation = trpc.finishTask.useMutation({
-    onSuccess() {
-      navigate("/tasker/ongoing");
-    },
-  });
-
   const navigate = useNavigate();
-
   useBackButton({
     show: true,
     onClick() {
@@ -38,6 +21,23 @@ export const OngoingTask = () => {
       document.getElementById("chat")?.click();
     },
     text: "Chat",
+  });
+
+  const params = useParams();
+  const taskId = params["taskId"]!;
+  const getTaskerOngoingTaskQuery = trpc.getTaskerOngoingTask.useQuery({
+    taskId,
+  });
+
+  const cancelTaskMutation = trpc.cancelTask.useMutation({
+    onSuccess() {
+      navigate("/tasker/ongoing");
+    },
+  });
+  const finishTaskMutation = trpc.finishTask.useMutation({
+    onSuccess() {
+      navigate("/tasker/ongoing");
+    },
   });
 
   if (getTaskerOngoingTaskQuery.isLoading) {

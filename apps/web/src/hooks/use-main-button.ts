@@ -9,7 +9,7 @@ export function useMainButton({
   danger,
 }:
   | {
-      show: boolean;
+      show: true;
       text: string;
       onClick: () => void;
       danger?: boolean;

@@ -6,19 +6,11 @@ import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const GettingStarted = () => {
-  const utils = trpc.useContext();
-
-  const setUserDataMutation = trpc.setUserData.useMutation({
-    onSuccess: () => {
-      utils.getUser.invalidate();
-      navigate("/tasker", {
-        replace: true,
-      });
-    },
+export const Onboarding = () => {
+  const navigate = useNavigate();
+  useBackButton({
+    show: false,
   });
-
-  useBackButton(false);
 
   useMainButton({
     show: true,
@@ -32,10 +24,18 @@ export const GettingStarted = () => {
     text: "Finish setup",
   });
 
+  const utils = trpc.useContext();
+  const setUserDataMutation = trpc.setUserData.useMutation({
+    onSuccess: () => {
+      utils.getUser.invalidate();
+      navigate("/tasker", {
+        replace: true,
+      });
+    },
+  });
+
   const [fullName, setFullName] = useState("");
   const [profile, setProfile] = useState("");
-
-  const navigate = useNavigate();
 
   return (
     <MainLayout header="Getting started" subHeader="Finish your profile setup">

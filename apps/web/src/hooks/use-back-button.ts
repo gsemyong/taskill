@@ -11,7 +11,6 @@ export const useBackButton = ({
     }
   | {
       show: false;
-      text?: undefined;
       onClick?: undefined;
     }) => {
   useEffect(() => {

@@ -8,13 +8,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 
-export const CustomerDashobard = () => {
+export const Menu = () => {
   const navigate = useNavigate();
-
   useBackButton({
     show: false,
   });
-
   useMainButton({
     show: true,
     onClick() {

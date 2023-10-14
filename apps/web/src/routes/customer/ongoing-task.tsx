@@ -1,3 +1,4 @@
+import { useTypedParams } from "react-router-typesafe-routes/dom";
 import Card from "@/components/card";
 import Loading from "@/components/loading";
 import { useBackButton } from "@/hooks/use-back-button";
@@ -5,35 +6,34 @@ import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { ChevronRightIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const OngoingTask = () => {
-  const params = useParams();
-  const taskId = params["taskId"]!;
-  const getOngoingTaskQuery = trpc.getOngoingTask.useQuery({
-    taskId,
-  });
-  const cancelTaskMutation = trpc.cancelTask.useMutation({
-    onSuccess() {
-      navigate("/customer/ongoing");
-    },
-  });
-
   const navigate = useNavigate();
-
   useBackButton({
     show: true,
     onClick() {
       navigate("/customer/ongoing");
     },
   });
-
   useMainButton({
     show: true,
     onClick() {
       document.getElementById("chat")?.click();
     },
     text: "Chat",
+  });
+
+  const { taskId } = useTypedParams(ROUTES.CUSTOMER.ONGOING_TASK);
+  const getOngoingTaskQuery = trpc.getOngoingTask.useQuery({
+    taskId,
+  });
+
+  const cancelTaskMutation = trpc.cancelTask.useMutation({
+    onSuccess() {
+      navigate("/customer/ongoing");
+    },
   });
 
   if (getOngoingTaskQuery.isLoading) {

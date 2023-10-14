@@ -1,4 +1,3 @@
-import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
@@ -7,17 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const EditProfile = () => {
-  const utils = trpc.useContext();
-
-  const setUserDataMutation = trpc.setUserData.useMutation({
-    onSuccess: () => {
-      utils.getUser.invalidate();
-      navigate("/tasker/profile", {
-        replace: true,
-      });
-    },
-  });
-
+  const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
@@ -38,12 +27,20 @@ export const EditProfile = () => {
 
   const getUserQuery = trpc.getUser.useQuery();
 
+  const utils = trpc.useContext();
+  const setUserDataMutation = trpc.setUserData.useMutation({
+    onSuccess: () => {
+      utils.getUser.invalidate();
+      navigate("/tasker/profile", {
+        replace: true,
+      });
+    },
+  });
+
   const [fullName, setFullName] = useState(
     getUserQuery.data?.user.fullName ?? "",
   );
   const [profile, setProfile] = useState(getUserQuery.data?.user.profile ?? "");
-
-  const navigate = useNavigate();
 
   return (
     <div className="p-4">

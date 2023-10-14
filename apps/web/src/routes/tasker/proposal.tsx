@@ -7,18 +7,6 @@ import { WebApp } from "@grammyjs/web-app";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Proposal = () => {
-  const params = useParams();
-  const proposalId = params["proposalId"]!;
-  const getProposalQuery = trpc.getProposal.useQuery({
-    proposalId,
-  });
-
-  const deleteProposalMutation = trpc.deleteProposal.useMutation({
-    onSuccess() {
-      navigate(-1);
-    },
-  });
-
   const navigate = useNavigate();
   useBackButton({
     show: true,
@@ -29,6 +17,18 @@ export const Proposal = () => {
 
   useMainButton({
     show: false,
+  });
+
+  const params = useParams();
+  const proposalId = params["proposalId"]!;
+  const getProposalQuery = trpc.getProposal.useQuery({
+    proposalId,
+  });
+
+  const deleteProposalMutation = trpc.deleteProposal.useMutation({
+    onSuccess() {
+      navigate(-1);
+    },
   });
 
   if (getProposalQuery.isLoading) {
