@@ -1,3 +1,4 @@
+import { useTypedParams } from "react-router-typesafe-routes/dom";
 import Card from "@/components/card";
 import Loading from "@/components/loading";
 import { useBackButton } from "@/hooks/use-back-button";
@@ -5,14 +6,20 @@ import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const NewProposal = () => {
+  const { taskId } = useTypedParams(ROUTES.TASKER.NEW_PROPOSAL);
+  const getTaskQuery = trpc.getTask.useQuery({
+    taskId,
+  });
+
   const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
-      navigate("/tasker/discover");
+      navigate(ROUTES.TASKER.DISCOVER.path);
     },
   });
   useMainButton({
@@ -30,18 +37,12 @@ export const NewProposal = () => {
     text: "Make a proposal",
   });
 
-  const params = useParams();
-  const taskId = params["taskId"]!;
-  const getTaskQuery = trpc.getTask.useQuery({
-    taskId,
-  });
-
   const utils = trpc.useContext();
   const createProposalMutation = trpc.createProposal.useMutation({
     onSuccess() {
       utils.discoverTasks.invalidate();
 
-      navigate("/tasker/proposals", {
+      navigate(ROUTES.TASKER.PROPOSALS.path, {
         replace: true,
       });
     },

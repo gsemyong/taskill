@@ -23,23 +23,23 @@ export const TASKER_ROUTES = route(
     ONGOING_TASKS: route("ongoing"),
     ONGOING_TASK: route("ongoing/:taskId", {
       params: {
-        taskId: string(),
+        taskId: string().defined(),
       },
     }),
     PROFILE: route("profile"),
     EDIT_PROFILE: route("editProfile"),
     NEW_PROPOSAL: route("newProposal/:taskId", {
       params: {
-        taskId: string(),
+        taskId: string().defined(),
       },
     }),
     PROPOSALS: route("proposals"),
     PROPOSAL: route("proposal/:proposalId", {
       params: {
-        proposalId: string(),
+        proposalId: string().defined(),
       },
     }),
-    FINISHED: route("finished"),
+    FINISHED_TASKS: route("finished"),
   },
 );
 
@@ -88,7 +88,7 @@ export const taskerRoutes: RouteObject = {
       element: <Proposals />,
     },
     {
-      path: TASKER_ROUTES.FINISHED.path,
+      path: TASKER_ROUTES.FINISHED_TASKS.path,
       element: <FinishedTasks />,
     },
   ],

@@ -5,6 +5,7 @@ import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const Onboarding = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const Onboarding = () => {
   const setUserDataMutation = trpc.setUserData.useMutation({
     onSuccess: () => {
       utils.getUser.invalidate();
-      navigate("/tasker", {
+      navigate(ROUTES.TASKER.MENU.path, {
         replace: true,
       });
     },

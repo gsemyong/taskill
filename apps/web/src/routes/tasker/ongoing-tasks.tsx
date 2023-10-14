@@ -4,13 +4,14 @@ import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const OngoingTasks = () => {
   const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
-      navigate("/tasker");
+      navigate(ROUTES.TASKER.MENU.path);
     },
   });
   useMainButton({
@@ -32,7 +33,11 @@ export const OngoingTasks = () => {
           <div className="text-hint">Ongoing tasks</div>
           <div className="flex flex-col gap-2">
             {getOnoingTasksQuery.data?.tasks.map((task) => (
-              <Link to={`/tasker/ongoing/${task.id}`}>
+              <Link
+                to={ROUTES.TASKER.ONGOING_TASK.buildPath({
+                  taskId: task.id,
+                })}
+              >
                 <Card>{task.description}</Card>
               </Link>
             ))}

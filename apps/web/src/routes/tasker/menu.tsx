@@ -8,6 +8,7 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const Menu = () => {
   useBackButton({
@@ -19,7 +20,7 @@ export const Menu = () => {
   useMainButton({
     show: true,
     onClick() {
-      navigate("/tasker/discover");
+      navigate(ROUTES.TASKER.DISCOVER.path);
     },
     text: "Discover tasks",
   });
@@ -29,7 +30,7 @@ export const Menu = () => {
       <div className="space-y-2">
         <div className="text-hint">Tasker menu</div>
         <Link
-          to="/tasker/proposals"
+          to={ROUTES.TASKER.PROPOSALS.path}
           className="flex w-full items-center justify-between rounded-md bg-background p-4"
         >
           <span className="flex items-center gap-2">
@@ -39,7 +40,7 @@ export const Menu = () => {
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
         <Link
-          to="/tasker/ongoing"
+          to={ROUTES.TASKER.ONGOING_TASKS.path}
           className="flex w-full items-center justify-between rounded-md bg-background p-4"
         >
           <span className="flex items-center gap-2">
@@ -49,7 +50,7 @@ export const Menu = () => {
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
         <Link
-          to="/tasker/finished"
+          to={ROUTES.TASKER.FINISHED_TASKS.path}
           className="flex w-full items-center justify-between rounded-md bg-background p-4"
         >
           <span className="flex items-center gap-2">
@@ -59,7 +60,7 @@ export const Menu = () => {
           <ChevronRightIcon className="h-5 w-5" />
         </Link>
         <Link
-          to="/tasker/profile"
+          to={ROUTES.TASKER.PROFILE.path}
           className="flex w-full items-center justify-between rounded-md bg-background p-4"
         >
           <span className="flex items-center gap-2">

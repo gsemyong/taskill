@@ -4,13 +4,14 @@ import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const EditProfile = () => {
   const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
-      navigate("/tasker/profile");
+      navigate(ROUTES.TASKER.PROFILE.path);
     },
   });
   useMainButton({
@@ -31,7 +32,7 @@ export const EditProfile = () => {
   const setUserDataMutation = trpc.setUserData.useMutation({
     onSuccess: () => {
       utils.getUser.invalidate();
-      navigate("/tasker/profile", {
+      navigate(ROUTES.TASKER.PROFILE.path, {
         replace: true,
       });
     },

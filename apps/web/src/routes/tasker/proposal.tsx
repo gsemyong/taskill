@@ -4,7 +4,9 @@ import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTypedParams } from "react-router-typesafe-routes/dom";
+import { ROUTES } from "@/routes";
 
 export const Proposal = () => {
   const navigate = useNavigate();
@@ -19,8 +21,7 @@ export const Proposal = () => {
     show: false,
   });
 
-  const params = useParams();
-  const proposalId = params["proposalId"]!;
+  const { proposalId } = useTypedParams(ROUTES.CUSTOMER.PROPOSAL);
   const getProposalQuery = trpc.getProposal.useQuery({
     proposalId,
   });

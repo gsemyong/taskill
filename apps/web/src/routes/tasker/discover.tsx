@@ -4,13 +4,14 @@ import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const Discover = () => {
   const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
-      navigate("/tasker");
+      navigate(ROUTES.TASKER.MENU.path);
     },
   });
   useMainButton({
@@ -33,7 +34,11 @@ export const Discover = () => {
         <div className="flex flex-col gap-2">
           <div className="text-hint">Tasks for you</div>
           {discoverTasksQuery.data?.tasks.map((task) => (
-            <Link to={`/tasker/make-proposal/${task.taskId}`}>
+            <Link
+              to={ROUTES.TASKER.NEW_PROPOSAL.buildPath({
+                taskId: task.taskId,
+              })}
+            >
               <Card>
                 <div>{task.description}</div>
               </Card>

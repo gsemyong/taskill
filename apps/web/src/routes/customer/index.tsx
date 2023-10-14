@@ -8,6 +8,7 @@ import { FinishedTasks } from "./finished-tasks";
 import { PostedTasks } from "./posted-tasks";
 import { PostedTask } from "./posted-task";
 import { NewTask } from "./new-task";
+import { TaskerProfile } from "./tasker-profile";
 
 export const CUSTOMER_ROUTES = route(
   "customer",
@@ -79,6 +80,10 @@ export const customerRoutes: RouteObject = {
     {
       path: CUSTOMER_ROUTES.FINISHED_TASKS.path,
       element: <FinishedTasks />,
+    },
+    {
+      path: CUSTOMER_ROUTES.TASKER_PROFILE.path,
+      element: <TaskerProfile />,
     },
   ],
 };

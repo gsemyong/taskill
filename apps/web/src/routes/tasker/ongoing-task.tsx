@@ -4,14 +4,17 @@ import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
+import { useTypedParams } from "react-router-typesafe-routes/dom";
+import { buildUserChatLink } from "@/lib/utils";
 
 export const OngoingTask = () => {
   const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
-      navigate("/tasker/ongoing");
+      navigate(ROUTES.TASKER.ONGOING_TASKS.path);
     },
   });
 
@@ -23,20 +26,19 @@ export const OngoingTask = () => {
     text: "Chat",
   });
 
-  const params = useParams();
-  const taskId = params["taskId"]!;
+  const { taskId } = useTypedParams(ROUTES.TASKER.NEW_PROPOSAL);
   const getTaskerOngoingTaskQuery = trpc.getTaskerOngoingTask.useQuery({
     taskId,
   });
 
   const cancelTaskMutation = trpc.cancelTask.useMutation({
     onSuccess() {
-      navigate("/tasker/ongoing");
+      navigate(ROUTES.TASKER.ONGOING_TASKS.path);
     },
   });
   const finishTaskMutation = trpc.finishTask.useMutation({
     onSuccess() {
-      navigate("/tasker/ongoing");
+      navigate(ROUTES.TASKER.ONGOING_TASKS.path);
     },
   });
 
@@ -89,7 +91,13 @@ export const OngoingTask = () => {
           </button>
         </div>
       </div>
-      <a className="hidden" id="chat" href="http://t.me/gsemyong/" />
+      <a
+        className="hidden"
+        id="chat"
+        href={buildUserChatLink(
+          getTaskerOngoingTaskQuery.data!.task.customerUsername,
+        )}
+      />
     </div>
   );
 };

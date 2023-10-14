@@ -1,6 +1,7 @@
 import { trpc } from "@/lib/trpc";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { ROUTES } from "..";
 
 export const Root = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export const Root = () => {
       getUserQuery.data?.user &&
       (!getUserQuery.data.user.fullName || !getUserQuery.data.user.profile)
     ) {
-      navigate("/tasker/getting-started");
+      navigate(ROUTES.TASKER.ONBOARDING.path);
     }
   }, [getUserQuery.data, navigate]);
 
