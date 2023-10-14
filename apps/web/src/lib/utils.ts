@@ -14,3 +14,7 @@ export function hexToRgb(hexColor: string): string | null {
   const rgb = `${red} ${green} ${blue}`;
   return rgb;
 }
+
+export function buildUserChatLink(username: string) {
+  return `http://t.me/${username}/`;
+}

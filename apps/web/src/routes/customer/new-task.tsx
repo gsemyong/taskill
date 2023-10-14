@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "..";
 
 export const NewTask = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const NewTask = () => {
 
   const postTaskMutation = trpc.postTask.useMutation({
     onSuccess: () => {
-      navigate("/customer/posted", {
+      navigate(ROUTES.CUSTOMER.POSTED_TASKS.path, {
         replace: true,
       });
     },

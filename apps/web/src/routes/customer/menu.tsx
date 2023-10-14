@@ -7,6 +7,7 @@ import {
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const Menu = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export const Menu = () => {
   useMainButton({
     show: true,
     onClick() {
-      navigate("/customer/new");
+      navigate(ROUTES.CUSTOMER.NEW_TASK.path);
     },
     text: "Add new task",
   });
@@ -27,7 +28,7 @@ export const Menu = () => {
         <div className="text-hint">Customer menu</div>
         <div className="flex flex-col gap-2">
           <Link
-            to="/customer/posted"
+            to={ROUTES.CUSTOMER.POSTED_TASKS.path}
             className="flex w-full items-center justify-between rounded-md bg-background p-4"
           >
             <span className="flex items-center gap-2">
@@ -37,7 +38,7 @@ export const Menu = () => {
             <ChevronRightIcon className="h-5 w-5" />
           </Link>
           <Link
-            to="/customer/ongoing"
+            to={ROUTES.CUSTOMER.ONGOING_TASKS.path}
             className="flex w-full items-center justify-between rounded-md bg-background p-4"
           >
             <span className="flex items-center gap-2">
@@ -47,7 +48,7 @@ export const Menu = () => {
             <ChevronRightIcon className="h-5 w-5" />
           </Link>
           <Link
-            to="/customer/finished"
+            to={ROUTES.CUSTOMER.FINISHED_TASKS.path}
             className="flex w-full items-center justify-between rounded-md bg-background p-4"
           >
             <span className="flex items-center gap-2">

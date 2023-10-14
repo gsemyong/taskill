@@ -32,7 +32,7 @@ export const CUSTOMER_ROUTES = route(
         proposalId: string().defined(),
       },
     }),
-    FINISHED: route("finished"),
+    FINISHED_TASKS: route("finished"),
     TASKER_PROFILE: route("tasker/:taskerId", {
       params: {
         taskerId: number().defined(),
@@ -77,7 +77,7 @@ export const customerRoutes: RouteObject = {
       element: <Proposal />,
     },
     {
-      path: CUSTOMER_ROUTES.FINISHED.path,
+      path: CUSTOMER_ROUTES.FINISHED_TASKS.path,
       element: <FinishedTasks />,
     },
   ],

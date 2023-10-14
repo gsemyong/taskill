@@ -8,13 +8,14 @@ import { WebApp } from "@grammyjs/web-app";
 import { ChevronRightIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/routes";
+import { buildUserChatLink } from "@/lib/utils";
 
 export const OngoingTask = () => {
   const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
-      navigate("/customer/ongoing");
+      navigate(ROUTES.CUSTOMER.ONGOING_TASKS.path);
     },
   });
   useMainButton({
@@ -32,7 +33,7 @@ export const OngoingTask = () => {
 
   const cancelTaskMutation = trpc.cancelTask.useMutation({
     onSuccess() {
-      navigate("/customer/ongoing");
+      navigate(ROUTES.CUSTOMER.ONGOING_TASKS.path);
     },
   });
 
@@ -50,7 +51,9 @@ export const OngoingTask = () => {
         <div className="space-y-2">
           <div className="text-hint">Actions</div>
           <Link
-            to={`/customer/tasker/${getOngoingTaskQuery.data?.task.taskerId}`}
+            to={ROUTES.CUSTOMER.TASKER_PROFILE.buildPath({
+              taskerId: getOngoingTaskQuery.data!.task.taskerId,
+            })}
             className="flex w-full items-center justify-between rounded-md bg-background p-4"
           >
             <span className="flex items-center gap-2">
@@ -78,7 +81,11 @@ export const OngoingTask = () => {
           </button>
         </div>
       </div>
-      <a className="hidden" id="chat" href="http://t.me/gsemyong/" />
+      <a
+        className="hidden"
+        id="chat"
+        href={buildUserChatLink(getOngoingTaskQuery.data!.task.taskerUsername)}
+      />
     </div>
   );
 };

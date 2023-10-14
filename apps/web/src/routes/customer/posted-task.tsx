@@ -6,6 +6,7 @@ import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/routes";
+import Loading from "@/components/loading";
 
 export const PostedTask = () => {
   const { taskId } = useTypedParams(ROUTES.CUSTOMER.POSTED_TASK);
@@ -22,7 +23,7 @@ export const PostedTask = () => {
   useBackButton({
     show: true,
     onClick() {
-      navigate("/customer/posted");
+      navigate(ROUTES.CUSTOMER.POSTED_TASKS.path);
     },
   });
 
@@ -45,36 +46,14 @@ export const PostedTask = () => {
   const deleteTaskMutation = trpc.deleteTask.useMutation({
     onSuccess: () => {
       utils.getPostedTasks.invalidate();
-      navigate("/customer/posted", {
+      navigate(ROUTES.CUSTOMER.POSTED_TASKS.path, {
         replace: true,
       });
     },
   });
 
   if (loading) {
-    return (
-      <div
-        className={`flex w-full items-center justify-center`}
-        style={{
-          height: WebApp.viewportStableHeight,
-        }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-12 w-12 animate-spin text-primary"
-        >
-          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-        </svg>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -92,7 +71,11 @@ export const PostedTask = () => {
           <div className="flex flex-col gap-2">
             <div className="font-medium text-hint">Proposals</div>
             {getTaskProposals.data?.proposals.map((proposal) => (
-              <Link to={`/customer/proposal/${proposal.id}`}>
+              <Link
+                to={ROUTES.CUSTOMER.PROPOSAL.buildPath({
+                  proposalId: proposal.id,
+                })}
+              >
                 <Card>
                   <div>{proposal.note}</div>
                 </Card>

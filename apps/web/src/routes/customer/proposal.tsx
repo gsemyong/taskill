@@ -1,3 +1,4 @@
+import { useTypedParams } from "react-router-typesafe-routes/dom";
 import Card from "@/components/card";
 import Loading from "@/components/loading";
 import { useBackButton } from "@/hooks/use-back-button";
@@ -5,11 +6,11 @@ import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const Proposal = () => {
-  const params = useParams();
-  const proposalId = params["proposalId"]!;
+  const { proposalId } = useTypedParams(ROUTES.CUSTOMER.PROPOSAL);
   const proposalQuery = trpc.getProposal.useQuery({
     proposalId,
   });
@@ -21,7 +22,7 @@ export const Proposal = () => {
   });
   const acceptProposalMutation = trpc.acceptProposal.useMutation({
     onSuccess() {
-      navigate("/customer/ongoing");
+      navigate(ROUTES.CUSTOMER.ONGOING_TASKS.path);
     },
   });
 
@@ -58,7 +59,9 @@ export const Proposal = () => {
             <div>{proposalQuery.data?.proposal.note}</div>
             <Link
               className="text-link"
-              to={`/customer/tasker/${proposalQuery.data?.proposal.tasker.id}`}
+              to={ROUTES.CUSTOMER.TASKER_PROFILE.buildPath({
+                taskerId: proposalQuery.data!.proposal.tasker.id,
+              })}
             >
               {proposalQuery.data?.proposal.tasker.fullName}
             </Link>

@@ -4,13 +4,14 @@ import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
 export const FinishedTasks = () => {
   const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
-      navigate("/customer");
+      navigate(ROUTES.CUSTOMER.MENU.path);
     },
   });
   useMainButton({
@@ -32,7 +33,9 @@ export const FinishedTasks = () => {
             <Card key={task.id}>
               <div>{task.description}</div>
               <Link
-                to={`/customer/tasker/${task.taskerId}`}
+                to={ROUTES.CUSTOMER.TASKER_PROFILE.buildPath({
+                  taskerId: task.taskerId!,
+                })}
                 className="text-link"
               >
                 {task.tasker?.fullName}
