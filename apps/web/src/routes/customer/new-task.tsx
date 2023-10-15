@@ -4,10 +4,20 @@ import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "..";
+import { ROUTES } from "@/routes";
 
 export const NewTask = () => {
   const navigate = useNavigate();
+  const utils = trpc.useContext();
+  const addTaskMutation = trpc.tasks.add.useMutation({
+    onSettled() {
+      utils.tasks.postedTasks.invalidate();
+    },
+    onSuccess() {
+      navigate(ROUTES.CUSTOMER.POSTED_TASKS.path);
+    },
+  });
+
   useBackButton({
     show: true,
     onClick() {
@@ -21,18 +31,11 @@ export const NewTask = () => {
       if (description.length === 0) {
         WebApp.showAlert("Please provide a detailed description");
       } else {
-        postTaskMutation.mutate({ description });
+        addTaskMutation.mutate({ description });
       }
     },
     text: "Post new task",
-  });
-
-  const postTaskMutation = trpc.postTask.useMutation({
-    onSuccess: () => {
-      navigate(ROUTES.CUSTOMER.POSTED_TASKS.path, {
-        replace: true,
-      });
-    },
+    progress: addTaskMutation.isLoading,
   });
 
   const [description, setDescription] = useState("");

@@ -7,18 +7,21 @@ export function useMainButton({
   onClick,
   text,
   danger,
+  progress,
 }:
   | {
       show: true;
       text: string;
       onClick: () => void;
       danger?: boolean;
+      progress?: boolean;
     }
   | {
       show: false;
       text?: string;
       onClick?: () => void;
       danger?: boolean;
+      progress?: boolean;
     }) {
   useEffect(() => {
     if (show) {
@@ -33,6 +36,11 @@ export function useMainButton({
           color: WebApp.themeParams.button_color,
         });
       }
+      if (progress) {
+        WebApp.MainButton.showProgress();
+      } else {
+        WebApp.MainButton.hideProgress();
+      }
       WebApp.MainButton.show();
     } else {
       WebApp.MainButton.hide();
@@ -43,5 +51,5 @@ export function useMainButton({
         WebApp.MainButton.offClick(onClick);
       }
     };
-  }, [danger, onClick, show, text]);
+  }, [danger, progress, onClick, show, text]);
 }

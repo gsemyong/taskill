@@ -22,21 +22,25 @@ export const PostedTasks = () => {
     text: "Add new task",
   });
 
-  const getPostedTasksQuery = trpc.getPostedTasks.useQuery();
+  const postedTasksQuery = trpc.tasks.postedTasks.useQuery();
 
-  if (getPostedTasksQuery.isLoading) {
+  if (postedTasksQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!postedTasksQuery.data) {
+    return null;
   }
 
   return (
     <div className="p-4">
-      {getPostedTasksQuery.data?.tasks.length === 0 ? (
+      {postedTasksQuery.data.tasks.length === 0 ? (
         <div className="text-hint">You have no posted tasks</div>
       ) : (
         <div className="space-y-2">
           <div className="text-hint">Posted tasks</div>
           <div className="flex flex-col gap-2">
-            {getPostedTasksQuery.data?.tasks.map((task) => (
+            {postedTasksQuery.data.tasks.map((task) => (
               <Link
                 key={task.id}
                 to={ROUTES.CUSTOMER.POSTED_TASK.buildPath({

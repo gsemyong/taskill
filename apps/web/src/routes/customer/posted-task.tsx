@@ -10,19 +10,29 @@ import Loading from "@/components/loading";
 
 export const PostedTask = () => {
   const { taskId } = useTypedParams(ROUTES.CUSTOMER.POSTED_TASK);
-  const getTaskQuery = trpc.getTask.useQuery({
+  const postedTaskQuery = trpc.tasks.postedTask.useQuery({
     taskId,
   });
-  const getTaskProposals = trpc.getTaskProposals.useQuery({
+  const taskProposalsQuery = trpc.proposals.taskProposals.useQuery({
     taskId,
   });
 
-  const loading = getTaskQuery.isLoading || getTaskProposals.isLoading;
+  const loading = postedTaskQuery.isLoading || taskProposalsQuery.isLoading;
 
   const navigate = useNavigate();
   useBackButton({
     show: true,
     onClick() {
+      navigate(ROUTES.CUSTOMER.POSTED_TASKS.path);
+    },
+  });
+
+  const utils = trpc.useContext();
+  const deleteTaskMutation = trpc.tasks.delete.useMutation({
+    onSettled() {
+      utils.tasks.postedTasks.invalidate();
+    },
+    onSuccess() {
       navigate(ROUTES.CUSTOMER.POSTED_TASKS.path);
     },
   });
@@ -40,20 +50,15 @@ export const PostedTask = () => {
     },
     text: "Delete task",
     danger: true,
-  });
-
-  const utils = trpc.useContext();
-  const deleteTaskMutation = trpc.deleteTask.useMutation({
-    onSuccess: () => {
-      utils.getPostedTasks.invalidate();
-      navigate(ROUTES.CUSTOMER.POSTED_TASKS.path, {
-        replace: true,
-      });
-    },
+    progress: deleteTaskMutation.isLoading,
   });
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (!postedTaskQuery.data || !taskProposalsQuery.data) {
+    return null;
   }
 
   return (
@@ -61,16 +66,16 @@ export const PostedTask = () => {
       <div className="space-y-4">
         <div className="space-y-2">
           <div className="text-hint">Task</div>
-          <Card>{getTaskQuery.data?.task.description}</Card>
+          <Card>{postedTaskQuery.data.task.description}</Card>
         </div>
-        {getTaskProposals.data?.proposals.length === 0 ? (
+        {taskProposalsQuery.data.proposals.length === 0 ? (
           <div className="text-hint">
             There are no proposals for this task yet
           </div>
         ) : (
           <div className="flex flex-col gap-2">
             <div className="font-medium text-hint">Proposals</div>
-            {getTaskProposals.data?.proposals.map((proposal) => (
+            {taskProposalsQuery.data.proposals.map((proposal) => (
               <Link
                 to={ROUTES.CUSTOMER.PROPOSAL.buildPath({
                   proposalId: proposal.id,
