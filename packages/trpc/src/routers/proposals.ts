@@ -3,9 +3,11 @@ import {
   acceptProposal,
   createProposal,
   deleteProposal,
+  getPostedTask,
   getProposal,
   getTaskProposals,
   getTaskerProposals,
+  notifyCustomerOfNewProposal,
 } from "api";
 import { z } from "zod";
 
@@ -57,10 +59,17 @@ export const proposalsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await createProposal({
+      const proposal = await createProposal({
         taskerId: ctx.user.id,
         note: input.note,
         taskId: input.taskId,
+      });
+      const task = await getPostedTask({
+        taskId: input.taskId,
+      });
+      await notifyCustomerOfNewProposal({
+        customerId: task.customerId,
+        proposalId: proposal.id,
       });
     }),
   delete: protectedProcedure

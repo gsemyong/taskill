@@ -12,11 +12,16 @@ export async function createProposal({
   taskerId: number;
   taskId: string;
 }) {
-  await db.insert(proposals).values({
-    note,
-    taskerId,
-    taskId,
-  });
+  const insertedProposals = await db
+    .insert(proposals)
+    .values({
+      note,
+      taskerId,
+      taskId,
+    })
+    .returning();
+
+  return insertedProposals[0];
 }
 
 export async function getTaskerProposals({ taskerId }: { taskerId: number }) {
@@ -65,6 +70,8 @@ export async function getTaskProposals({ taskId }: { taskId: string }) {
 }
 
 export async function getProposal({ proposalId }: { proposalId: string }) {
+  console.log("Trying to get proposal");
+
   const proposal = await db.query.proposals.findFirst({
     columns: {
       note: true,
