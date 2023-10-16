@@ -3,12 +3,13 @@ import Loading from "@/components/loading";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTypedParams } from "react-router-typesafe-routes/dom";
+import { ROUTES } from "@/routes";
 
 export const TaskerProfile = () => {
-  const params = useParams();
-  const taskerId = parseInt(params["taskerId"]!);
-  const getTaskerQuery = trpc.getTasker.useQuery({
+  const { taskerId } = useTypedParams(ROUTES.CUSTOMER.TASKER_PROFILE);
+  const taskerQuery = trpc.users.tasker.useQuery({
     taskerId,
   });
 
@@ -20,28 +21,32 @@ export const TaskerProfile = () => {
     },
   });
   useMainButton({
-    show: !getTaskerQuery.isLoading,
+    show: !taskerQuery.isLoading,
     onClick() {
       document.getElementById("chat")?.click();
     },
     text: "Chat",
   });
 
-  if (getTaskerQuery.isLoading) {
+  if (taskerQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!taskerQuery.data) {
+    return null;
   }
 
   return (
     <div className="p-4">
       <div className="space-y-4">
         <div className="text-lg font-medium">
-          {getTaskerQuery.data?.tasker.fullName}
+          {taskerQuery.data.tasker.fullName}
         </div>
         <div className="space-y-2">
           <div className="text-hint">Profile</div>
           <Card>
             <div className="whitespace-pre-wrap">
-              {getTaskerQuery.data?.tasker.profile}
+              {taskerQuery.data.tasker.profile}
             </div>
           </Card>
         </div>
@@ -60,7 +65,11 @@ export const TaskerProfile = () => {
           </Card>
         </div> */}
       </div>
-      <a className="hidden" id="chat" href="http://t.me/gsemyong/" />
+      <a
+        className="hidden"
+        id="chat"
+        href={`http://t.me/${taskerQuery.data.tasker.username}/`}
+      />
     </div>
   );
 };

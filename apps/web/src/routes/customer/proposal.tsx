@@ -11,16 +11,16 @@ import { ROUTES } from "@/routes";
 
 export const Proposal = () => {
   const { proposalId } = useTypedParams(ROUTES.CUSTOMER.PROPOSAL);
-  const proposalQuery = trpc.getProposal.useQuery({
+  const proposalQuery = trpc.proposals.proposal.useQuery({
     proposalId,
   });
 
-  const deleteProposalMutation = trpc.deleteProposal.useMutation({
+  const deleteProposalMutation = trpc.proposals.delete.useMutation({
     onSuccess() {
       navigate(-1);
     },
   });
-  const acceptProposalMutation = trpc.acceptProposal.useMutation({
+  const acceptProposalMutation = trpc.proposals.accept.useMutation({
     onSuccess() {
       navigate(ROUTES.CUSTOMER.ONGOING_TASKS.path);
     },
@@ -46,24 +46,28 @@ export const Proposal = () => {
     return <Loading />;
   }
 
+  if (!proposalQuery.data) {
+    return null;
+  }
+
   return (
     <div className="p-4">
       <div className="space-y-4">
         <div className="space-y-2">
           <div className="font-medium text-hint">Task</div>
-          <Card>{proposalQuery.data?.proposal.task.description}</Card>
+          <Card>{proposalQuery.data.proposal.task.description}</Card>
         </div>
         <div className="space-y-2">
           <div className="font-medium text-hint">Note</div>
           <Card>
-            <div>{proposalQuery.data?.proposal.note}</div>
+            <div>{proposalQuery.data.proposal.note}</div>
             <Link
               className="text-link"
               to={ROUTES.CUSTOMER.TASKER_PROFILE.buildPath({
-                taskerId: proposalQuery.data!.proposal.tasker.id,
+                taskerId: proposalQuery.data.proposal.tasker.id,
               })}
             >
-              {proposalQuery.data?.proposal.tasker.fullName}
+              {proposalQuery.data.proposal.tasker.fullName}
             </Link>
           </Card>
         </div>
@@ -109,7 +113,11 @@ export const Proposal = () => {
           </div>
         </div>
       </div>
-      <a className="hidden" id="chat" href="http://t.me/gsemyong/" />
+      <a
+        className="hidden"
+        id="chat"
+        href={`http://t.me/${proposalQuery.data.proposal.taskerUsername}/`}
+      />
     </div>
   );
 };

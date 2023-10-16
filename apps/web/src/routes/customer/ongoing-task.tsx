@@ -27,18 +27,22 @@ export const OngoingTask = () => {
   });
 
   const { taskId } = useTypedParams(ROUTES.CUSTOMER.ONGOING_TASK);
-  const getOngoingTaskQuery = trpc.getOngoingTask.useQuery({
+  const ongoingTaskQuery = trpc.tasks.customerOngoingTask.useQuery({
     taskId,
   });
 
-  const cancelTaskMutation = trpc.cancelTask.useMutation({
+  const deleteTaskMutation = trpc.tasks.delete.useMutation({
     onSuccess() {
       navigate(ROUTES.CUSTOMER.ONGOING_TASKS.path);
     },
   });
 
-  if (getOngoingTaskQuery.isLoading) {
+  if (ongoingTaskQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!ongoingTaskQuery.data) {
+    return null;
   }
 
   return (
@@ -46,13 +50,13 @@ export const OngoingTask = () => {
       <div className="flex flex-col gap-4">
         <div className="space-y-2">
           <div className="text-hint">Task</div>
-          <Card>{getOngoingTaskQuery.data?.task.description}</Card>
+          <Card>{ongoingTaskQuery.data.task.description}</Card>
         </div>
         <div className="space-y-2">
           <div className="text-hint">Actions</div>
           <Link
             to={ROUTES.CUSTOMER.TASKER_PROFILE.buildPath({
-              taskerId: getOngoingTaskQuery.data!.task.taskerId,
+              taskerId: ongoingTaskQuery.data.task.taskerId,
             })}
             className="flex w-full items-center justify-between rounded-md bg-background p-4"
           >
@@ -68,7 +72,7 @@ export const OngoingTask = () => {
                 "Are you sure you want to cancel this task?",
                 async (ok) => {
                   if (ok) {
-                    cancelTaskMutation.mutate({
+                    deleteTaskMutation.mutate({
                       taskId,
                     });
                   }
@@ -84,7 +88,7 @@ export const OngoingTask = () => {
       <a
         className="hidden"
         id="chat"
-        href={buildUserChatLink(getOngoingTaskQuery.data!.task.taskerUsername)}
+        href={buildUserChatLink(ongoingTaskQuery.data.task.taskerUsername)}
       />
     </div>
   );
