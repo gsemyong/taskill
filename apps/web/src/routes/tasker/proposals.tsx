@@ -18,21 +18,25 @@ export const Proposals = () => {
     show: false,
   });
 
-  const getTaskerProposals = trpc.getTaskerProposals.useQuery();
+  const taskerProposalsQuery = trpc.proposals.taskerProposals.useQuery();
 
-  if (getTaskerProposals.isLoading) {
+  if (taskerProposalsQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!taskerProposalsQuery.data) {
+    return null;
   }
 
   return (
     <div className="p-4">
-      {getTaskerProposals.data?.proposals.length === 0 ? (
+      {taskerProposalsQuery.data.proposals.length === 0 ? (
         <div className="text-hint">You have no active proposals</div>
       ) : (
         <div className="space-y-2">
           <div className="text-hint">Proposals</div>
           <div className="flex flex-col gap-2">
-            {getTaskerProposals.data?.proposals.map((proposal) => (
+            {taskerProposalsQuery.data.proposals.map((proposal) => (
               <Link
                 to={ROUTES.TASKER.PROPOSAL.buildPath({
                   proposalId: proposal.id,

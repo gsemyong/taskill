@@ -11,7 +11,7 @@ import { ROUTES } from "@/routes";
 
 export const NewProposal = () => {
   const { taskId } = useTypedParams(ROUTES.TASKER.NEW_PROPOSAL);
-  const getTaskQuery = trpc.getTask.useQuery({
+  const postedTaskQuery = trpc.tasks.postedTask.useQuery({
     taskId,
   });
 
@@ -38,9 +38,9 @@ export const NewProposal = () => {
   });
 
   const utils = trpc.useContext();
-  const createProposalMutation = trpc.createProposal.useMutation({
+  const createProposalMutation = trpc.proposals.create.useMutation({
     onSuccess() {
-      utils.discoverTasks.invalidate();
+      utils.tasks.search.invalidate();
 
       navigate(ROUTES.TASKER.PROPOSALS.path, {
         replace: true,
@@ -50,8 +50,12 @@ export const NewProposal = () => {
 
   const [note, setNote] = useState("");
 
-  if (getTaskQuery.isLoading) {
+  if (postedTaskQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!postedTaskQuery.data) {
+    return null;
   }
 
   return (
@@ -60,7 +64,7 @@ export const NewProposal = () => {
         <div className="space-y-2">
           <div className="text-hint">Task</div>
           <Card>
-            <div>{getTaskQuery.data?.task.description}</div>
+            <div>{postedTaskQuery.data.task.description}</div>
           </Card>
         </div>
         <div className="flex flex-col gap-2">

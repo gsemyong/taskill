@@ -12,7 +12,7 @@ const App = () => {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: "https://d251-62-65-174-190.ngrok-free.app/trpc",
+          url: "https://9d16-62-168-118-250.ngrok-free.app/trpc",
           headers: {
             "ngrok-skip-browser-warning": "true",
             "init-data": WebApp.initData,

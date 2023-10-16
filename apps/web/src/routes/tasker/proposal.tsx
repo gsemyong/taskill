@@ -22,18 +22,22 @@ export const Proposal = () => {
   });
 
   const { proposalId } = useTypedParams(ROUTES.CUSTOMER.PROPOSAL);
-  const getProposalQuery = trpc.getProposal.useQuery({
+  const proposalQuery = trpc.proposals.proposal.useQuery({
     proposalId,
   });
 
-  const deleteProposalMutation = trpc.deleteProposal.useMutation({
+  const deleteProposalMutation = trpc.proposals.delete.useMutation({
     onSuccess() {
       navigate(-1);
     },
   });
 
-  if (getProposalQuery.isLoading) {
+  if (proposalQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!proposalQuery.data) {
+    return null;
   }
 
   return (
@@ -41,11 +45,11 @@ export const Proposal = () => {
       <div className="space-y-4">
         <div className="space-y-2">
           <div className="text-hint">Task</div>
-          <Card>{getProposalQuery.data?.proposal.task.description}</Card>
+          <Card>{proposalQuery.data.proposal.task.description}</Card>
         </div>
         <div className="space-y-2">
           <div className="text-hint">Note</div>
-          <Card>{getProposalQuery.data?.proposal.note}</Card>
+          <Card>{proposalQuery.data.proposal.note}</Card>
         </div>
         <div className="space-y-2">
           <div className="text-hint">Actions</div>

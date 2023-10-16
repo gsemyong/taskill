@@ -1,21 +1,21 @@
 import { trpc } from "@/lib/trpc";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { ROUTES } from "..";
+import { ROUTES } from "@/routes";
 
 export const Root = () => {
   const navigate = useNavigate();
 
-  const getUserQuery = trpc.getUser.useQuery();
+  const userQuery = trpc.users.user.useQuery();
 
   useEffect(() => {
     if (
-      getUserQuery.data?.user &&
-      (!getUserQuery.data.user.fullName || !getUserQuery.data.user.profile)
+      userQuery.data?.user &&
+      (!userQuery.data.user.fullName || !userQuery.data.user.profile)
     ) {
       navigate(ROUTES.TASKER.ONBOARDING.path);
     }
-  }, [getUserQuery.data, navigate]);
+  }, [userQuery.data, navigate]);
 
   return <Outlet />;
 };

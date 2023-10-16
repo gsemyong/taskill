@@ -18,21 +18,25 @@ export const OngoingTasks = () => {
     show: false,
   });
 
-  const getOnoingTasksQuery = trpc.getTaskerOngoingTasks.useQuery();
+  const taskerOngoingTasksQuery = trpc.tasks.taskerOngoingTasks.useQuery();
 
-  if (getOnoingTasksQuery.isLoading) {
+  if (taskerOngoingTasksQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!taskerOngoingTasksQuery.data) {
+    return null;
   }
 
   return (
     <div className="p-4">
-      {getOnoingTasksQuery.data?.tasks.length === 0 ? (
+      {taskerOngoingTasksQuery.data.tasks.length === 0 ? (
         <div className="text-hint">You have no ongoing tasks</div>
       ) : (
         <div className="space-y-2">
           <div className="text-hint">Ongoing tasks</div>
           <div className="flex flex-col gap-2">
-            {getOnoingTasksQuery.data?.tasks.map((task) => (
+            {taskerOngoingTasksQuery.data.tasks.map((task) => (
               <Link
                 to={ROUTES.TASKER.ONGOING_TASK.buildPath({
                   taskId: task.id,

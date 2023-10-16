@@ -27,23 +27,27 @@ export const OngoingTask = () => {
   });
 
   const { taskId } = useTypedParams(ROUTES.TASKER.NEW_PROPOSAL);
-  const getTaskerOngoingTaskQuery = trpc.getTaskerOngoingTask.useQuery({
+  const taskerOngoingTaskQuery = trpc.tasks.taskerOngoingTask.useQuery({
     taskId,
   });
 
-  const cancelTaskMutation = trpc.cancelTask.useMutation({
+  const deleteTaskMutation = trpc.tasks.delete.useMutation({
     onSuccess() {
       navigate(ROUTES.TASKER.ONGOING_TASKS.path);
     },
   });
-  const finishTaskMutation = trpc.finishTask.useMutation({
+  const finishTaskMutation = trpc.tasks.finish.useMutation({
     onSuccess() {
       navigate(ROUTES.TASKER.ONGOING_TASKS.path);
     },
   });
 
-  if (getTaskerOngoingTaskQuery.isLoading) {
+  if (taskerOngoingTaskQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!taskerOngoingTaskQuery.data) {
+    return null;
   }
 
   return (
@@ -51,7 +55,7 @@ export const OngoingTask = () => {
       <div className="flex flex-col gap-4">
         <div className="space-y-2">
           <div className="text-hint">Task</div>
-          <Card>{getTaskerOngoingTaskQuery.data?.task.description}</Card>
+          <Card>{taskerOngoingTaskQuery.data.task.description}</Card>
         </div>
         <div className="space-y-2">
           <div className="text-hint">Actions</div>
@@ -78,7 +82,7 @@ export const OngoingTask = () => {
                 "Are you sure you want to cancel this task?",
                 async (ok) => {
                   if (ok) {
-                    cancelTaskMutation.mutate({
+                    deleteTaskMutation.mutate({
                       taskId,
                     });
                   }
@@ -95,7 +99,7 @@ export const OngoingTask = () => {
         className="hidden"
         id="chat"
         href={buildUserChatLink(
-          getTaskerOngoingTaskQuery.data!.task.customerUsername,
+          taskerOngoingTaskQuery.data.task.customerUsername,
         )}
       />
     </div>

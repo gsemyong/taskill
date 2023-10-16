@@ -18,10 +18,14 @@ export const FinishedTasks = () => {
     show: false,
   });
 
-  const getTaskerFinishedTasksQuery = trpc.getTaskerFinishedTasks.useQuery();
+  const getTaskerFinishedTasksQuery = trpc.tasks.taskerFinishedTasks.useQuery();
 
   if (getTaskerFinishedTasksQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!getTaskerFinishedTasksQuery.data) {
+    return null;
   }
 
   return (
@@ -29,7 +33,7 @@ export const FinishedTasks = () => {
       <div className="space-y-2">
         <div className="text-hint">Finished tasks</div>
         <div className="flex flex-col gap-2">
-          {getTaskerFinishedTasksQuery.data?.tasks.map((task) => (
+          {getTaskerFinishedTasksQuery.data.tasks.map((task) => (
             <Card key={task.id}>{task.description}</Card>
           ))}
         </div>

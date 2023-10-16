@@ -18,22 +18,26 @@ export const Discover = () => {
     show: false,
   });
 
-  const discoverTasksQuery = trpc.discoverTasks.useQuery();
+  const searchTasksQuery = trpc.tasks.search.useQuery();
 
-  if (discoverTasksQuery.isLoading) {
+  if (searchTasksQuery.isLoading) {
     return <Loading />;
+  }
+
+  if (!searchTasksQuery.data) {
+    return null;
   }
 
   return (
     <div className="p-4">
-      {discoverTasksQuery.data?.tasks.length === 0 ? (
+      {searchTasksQuery.data.tasks.length === 0 ? (
         <div className="text-hint">
           There are no tasks available for you, please check again later
         </div>
       ) : (
         <div className="flex flex-col gap-2">
           <div className="text-hint">Tasks for you</div>
-          {discoverTasksQuery.data?.tasks.map((task) => (
+          {searchTasksQuery.data.tasks.map((task) => (
             <Link
               to={ROUTES.TASKER.NEW_PROPOSAL.buildPath({
                 taskId: task.taskId,

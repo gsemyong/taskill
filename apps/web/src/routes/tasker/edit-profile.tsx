@@ -20,28 +20,26 @@ export const EditProfile = () => {
       if (fullName.length === 0 || profile.length === 0) {
         WebApp.showAlert("Please fill all the fields");
       } else {
-        setUserDataMutation.mutate({ fullName, profile });
+        setTaskerInfoMutation.mutate({ fullName, profile });
       }
     },
     text: "Save",
   });
 
-  const getUserQuery = trpc.getUser.useQuery();
+  const userQuery = trpc.users.user.useQuery();
 
   const utils = trpc.useContext();
-  const setUserDataMutation = trpc.setUserData.useMutation({
+  const setTaskerInfoMutation = trpc.users.setTaskerInfo.useMutation({
     onSuccess: () => {
-      utils.getUser.invalidate();
+      utils.users.user.invalidate();
       navigate(ROUTES.TASKER.PROFILE.path, {
         replace: true,
       });
     },
   });
 
-  const [fullName, setFullName] = useState(
-    getUserQuery.data?.user.fullName ?? "",
-  );
-  const [profile, setProfile] = useState(getUserQuery.data?.user.profile ?? "");
+  const [fullName, setFullName] = useState(userQuery.data?.user.fullName ?? "");
+  const [profile, setProfile] = useState(userQuery.data?.user.profile ?? "");
 
   return (
     <div className="p-4">

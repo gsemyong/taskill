@@ -19,16 +19,16 @@ export const Onboarding = () => {
       if (fullName.length === 0 || profile.length === 0) {
         WebApp.showAlert("Please fill all the fields");
       } else {
-        setUserDataMutation.mutate({ fullName, profile });
+        setTaskerInfoMutation.mutate({ fullName, profile });
       }
     },
     text: "Finish setup",
   });
 
   const utils = trpc.useContext();
-  const setUserDataMutation = trpc.setUserData.useMutation({
+  const setTaskerInfoMutation = trpc.users.setTaskerInfo.useMutation({
     onSuccess: () => {
-      utils.getUser.invalidate();
+      utils.users.user.invalidate();
       navigate(ROUTES.TASKER.MENU.path, {
         replace: true,
       });
