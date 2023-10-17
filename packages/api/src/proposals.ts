@@ -1,5 +1,5 @@
 import { db, proposals, tasks } from "db";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { getUsername } from "./users";
 import { searchDb, type Task, tasksSchema } from "search-db";
 

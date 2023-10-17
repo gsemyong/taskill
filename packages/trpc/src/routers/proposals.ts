@@ -7,9 +7,11 @@ import {
   getProposal,
   getTaskProposals,
   getTaskerProposals,
-  notifyCustomerOfNewProposal,
+  sendNotification,
 } from "api";
+import { InlineKeyboard } from "grammy";
 import { z } from "zod";
+import { env } from "../env";
 
 export const proposalsRouter = router({
   proposal: protectedProcedure
@@ -67,9 +69,13 @@ export const proposalsRouter = router({
       const task = await getPostedTask({
         taskId: input.taskId,
       });
-      await notifyCustomerOfNewProposal({
-        customerId: task.customerId,
-        proposalId: proposal.id,
+      await sendNotification({
+        userId: task.customerId,
+        text: `You have a new proposal for task: ${task.description}`,
+        replyMarkup: new InlineKeyboard().webApp(
+          "View proposal",
+          `${env.WEB_APP_URL}/customer/proposal/${proposal.id}`
+        ),
       });
     }),
   delete: protectedProcedure
