@@ -3,9 +3,10 @@ import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 import { appRouter, createContext } from "trpc";
 import { bot, appsMenu } from "bot";
 import { createUser } from "api";
-import { uploadRouter, fastifyUploadthingPlugin } from "@dilo/uploadthing";
 import fastify from "fastify";
 import cors from "@fastify/cors";
+import { fastifyUploadthingPlugin } from "uploadthing/fastify";
+import { uploadRouter } from "./uploadthing";
 
 bot.api.setMyCommands([
   {

@@ -14,9 +14,6 @@ importers:
 
   apps/server:
     dependencies:
-      '@dilo/uploadthing':
-        specifier: workspace:*
-        version: link:../../packages/uploadthing
       '@fastify/cors':
         specifier: ^8.4.0
         version: 8.4.0
@@ -44,6 +41,9 @@ importers:
       trpc:
         specifier: workspace:*
         version: link:../../packages/trpc
+      uploadthing:
+        specifier: ^5.7.1
+        version: 5.7.1(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4

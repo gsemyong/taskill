@@ -17,5 +17,3 @@ export const uploadRouter: FileRouter = {
 };
 
 export type OurFileRouter = typeof uploadRouter;
-
-export { fastifyUploadthingPlugin } from "uploadthing/fastify";
