@@ -6,8 +6,13 @@ import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/routes";
+import { useTypedSearchParams } from "react-router-typesafe-routes/dom";
 
 export const Onboarding = () => {
+  const [{ verificationStatus }] = useTypedSearchParams(
+    ROUTES.TASKER.ONBOARDING,
+  );
+
   const navigate = useNavigate();
   useBackButton({
     show: false,

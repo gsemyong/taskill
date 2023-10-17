@@ -1,10 +1,11 @@
 import "dotenv/config";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
-import fastify from "fastify";
 import { appRouter, createContext } from "trpc";
-import cors from "@fastify/cors";
 import { bot, appsMenu } from "bot";
 import { createUser } from "api";
+import { uploadRouter, fastifyUploadthingPlugin } from "@dilo/uploadthing";
+import fastify from "fastify";
+import cors from "@fastify/cors";
 
 bot.api.setMyCommands([
   {
@@ -41,11 +42,16 @@ bot.command("apps", (ctx) =>
 bot.start();
 
 const server = fastify({
+  logger: true,
   maxParamLength: 5000,
 });
 
 await server.register(cors, {
   origin: "*",
+});
+
+await server.register(fastifyUploadthingPlugin, {
+  router: uploadRouter,
 });
 
 await server.register(fastifyTRPCPlugin, {

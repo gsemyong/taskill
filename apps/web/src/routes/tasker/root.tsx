@@ -12,9 +12,14 @@ export const Root = () => {
   useEffect(() => {
     if (
       userQuery.data?.user &&
-      (!userQuery.data.user.fullName || !userQuery.data.user.profile)
+      userQuery.data.user.verificationStatus !== "verified"
     ) {
-      navigate(ROUTES.TASKER.ONBOARDING.path);
+      navigate(
+        ROUTES.TASKER.ONBOARDING.path +
+          ROUTES.TASKER.ONBOARDING.buildSearch({
+            verificationStatus: userQuery.data.user.verificationStatus,
+          }),
+      );
     }
   }, [userQuery.data, navigate]);
 

@@ -1,5 +1,6 @@
 import { type RouteObject } from "react-router-dom";
 import { route, string } from "react-router-typesafe-routes/dom";
+import { zod } from "react-router-typesafe-routes/zod";
 import { Root } from "./root";
 import { Menu } from "./menu";
 import { Onboarding } from "./onboarding";
@@ -12,13 +13,20 @@ import { NewProposal } from "./new-proposal";
 import { Proposal } from "./proposal";
 import { Proposals } from "./proposals";
 import { FinishedTasks } from "./finished-tasks";
+import { z } from "zod";
 
 export const TASKER_ROUTES = route(
   "tasker",
   {},
   {
     MENU: route(""),
-    ONBOARDING: route("onboarding"),
+    ONBOARDING: route("onboarding", {
+      searchParams: {
+        verificationStatus: zod(
+          z.enum(["unverified", "pending", "rejected"]),
+        ).defined(),
+      },
+    }),
     DISCOVER: route("discover"),
     ONGOING_TASKS: route("ongoing"),
     ONGOING_TASK: route("ongoing/:taskId", {

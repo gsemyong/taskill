@@ -1,4 +1,4 @@
-import { sqliteTable, text, int, blob } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, int } from "drizzle-orm/sqlite-core";
 import { createId } from "@paralleldrive/cuid2";
 import { relations } from "drizzle-orm";
 
@@ -7,6 +7,11 @@ export const users = sqliteTable("users", {
   chatId: int("chat_id").notNull().unique(),
   fullName: text("full_name"),
   profile: text("profile"),
+  verificationStatus: text("verification_status", {
+    enum: ["unverified", "pending", "verified", "rejected"],
+  })
+    .notNull()
+    .default("unverified"),
 });
 
 export const tasks = sqliteTable("tasks", {

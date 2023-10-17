@@ -5,19 +5,17 @@
     "dev": "tsx --watch src/index.ts"
   },
   "dependencies": {
-    "@epic-web/remember": "^1.0.2",
-    "@grammyjs/conversations": "^1.1.2",
-    "@grammyjs/menu": "^1.2.1",
+    "@fastify/cors": "^8.4.0",
     "@t3-oss/env-core": "^0.6.1",
+    "@trpc/server": "^10.38.4",
     "api": "workspace:*",
     "bot": "workspace:*",
     "trpc": "workspace:*",
+    "@dilo/uploadthing": "workspace:*",
     "dotenv": "^16.3.1",
-    "grammy": "^1.19.0",
-    "zod": "^3.22.2",
     "fastify": "^4.23.2",
-    "@fastify/cors": "^8.4.0",
-    "@trpc/server": "^10.38.4"
+    "grammy": "^1.19.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "tsconfig": "workspace:*",

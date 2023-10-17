@@ -8,6 +8,7 @@
     "reset": "tsx src/scripts/reset.ts"
   },
   "dependencies": {
+    "@babel/runtime": "^7.23.2",
     "typesense": "^1.7.1",
     "zod": "^3.22.2"
   },

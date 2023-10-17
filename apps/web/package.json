@@ -23,7 +23,8 @@
     "react-router-dom": "^6.16.0",
     "react-router-typesafe-routes": "^1.2.1",
     "tailwind-merge": "^1.14.0",
-    "trpc": "workspace:*"
+    "trpc": "workspace:*",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.6.5",
