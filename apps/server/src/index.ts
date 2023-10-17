@@ -6,7 +6,7 @@ import { createUser } from "api";
 import fastify from "fastify";
 import cors from "@fastify/cors";
 import { fastifyUploadthingPlugin } from "uploadthing/fastify";
-import { uploadRouter } from "./uploadthing";
+import { uploadRouter } from "file-uploads";
 
 bot.api.setMyCommands([
   {

@@ -1,0 +1,12 @@
+{
+  "name": "file-uploads",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "uploadthing": "^5.7.1"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
+  }
+}

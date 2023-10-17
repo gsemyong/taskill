@@ -10,6 +10,7 @@
     "@trpc/server": "^10.38.4",
     "api": "workspace:*",
     "bot": "workspace:*",
+    "file-uploads": "workspace:*",
     "dotenv": "^16.3.1",
     "fastify": "^4.23.2",
     "grammy": "^1.19.0",
