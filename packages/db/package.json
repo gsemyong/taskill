@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "dev": "turso dev",
+    "dev": "sqld --http-listen-addr 127.0.0.1:8080 --db-path data.sqld",
     "push": "drizzle-kit push:sqlite",
     "reset": "tsx src/scripts/reset.ts",
     "studio": "pnpm drizzle-kit studio --port 3000 --verbose"
