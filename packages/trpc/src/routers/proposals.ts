@@ -71,7 +71,7 @@ export const proposalsRouter = router({
       });
       await sendNotification({
         userId: task.customerId,
-        text: `You have a new proposal for task: ${task.description}`,
+        text: `You have a new proposal for task:\n\n${task.description}`,
         replyMarkup: new InlineKeyboard().webApp(
           "View proposal",
           `${env.WEB_APP_URL}/customer/proposal/${proposal.id}`

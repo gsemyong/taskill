@@ -6,12 +6,16 @@ import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/routes";
-import { useTypedSearchParams } from "react-router-typesafe-routes/dom";
+// import { useTypedSearchParams } from "react-router-typesafe-routes/dom";
+import { generateComponents } from "@uploadthing/react";
+import { type OurFileRouter } from "file-uploads";
+
+const { UploadButton } = generateComponents<OurFileRouter>();
 
 export const Onboarding = () => {
-  const [{ verificationStatus }] = useTypedSearchParams(
-    ROUTES.TASKER.ONBOARDING,
-  );
+  // const [{ verificationStatus }] = useTypedSearchParams(
+  //   ROUTES.TASKER.ONBOARDING,
+  // );
 
   const navigate = useNavigate();
   useBackButton({
@@ -73,6 +77,22 @@ export const Onboarding = () => {
             className="rounded-md border-none bg-background focus:ring-primary"
           />
         </div>
+        <UploadButton
+          endpoint="verificationDocument"
+          onClientUploadComplete={(res) => {
+            // Do something with the response
+            console.log("Files: ", res);
+            alert("Upload Completed");
+          }}
+          onUploadError={(error: Error) => {
+            // Do something with the error.
+            alert(`ERROR! ${error.message}`);
+          }}
+          onUploadBegin={(name) => {
+            // Do something once upload begins
+            console.log("Uploading: ", name);
+          }}
+        />
       </div>
     </MainLayout>
   );
