@@ -14,7 +14,6 @@ const App = () => {
         httpBatchLink({
           url: "http://localhost:1337/trpc",
           headers: {
-            "ngrok-skip-browser-warning": "true",
             "init-data": WebApp.initData,
           },
         }),
