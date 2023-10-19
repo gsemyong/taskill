@@ -13,3 +13,4 @@ export const db = drizzle(client, {
 });
 
 export * from "./schema";
+export * from "drizzle-orm";

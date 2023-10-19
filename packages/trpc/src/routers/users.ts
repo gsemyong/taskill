@@ -1,6 +1,8 @@
 import { getTaskerInfo, getUser, getUsername, setTaskerInfo } from "api";
 import { protectedProcedure, router } from "../trpc";
+import { db, eq, users } from "db";
 import { z } from "zod";
+import { utapi } from "file-uploads";
 
 export const usersRouter = router({
   user: protectedProcedure.query(async ({ ctx }) => {
@@ -43,5 +45,24 @@ export const usersRouter = router({
         fullName: input.fullName,
         profile: input.profile,
       });
+    }),
+  sendTaskerInfoForVerification: protectedProcedure
+    .input(
+      z.object({
+        fullName: z.string(),
+        profile: z.string(),
+        imageKey: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await db
+        .update(users)
+        .set({
+          fullName: input.fullName,
+          profile: input.profile,
+          imageKey: input.imageKey,
+          verificationStatus: "pending",
+        })
+        .where(eq(users.id, ctx.user.id));
     }),
 });

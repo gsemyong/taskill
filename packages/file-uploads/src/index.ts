@@ -1,4 +1,5 @@
 import { createUploadthing, type FileRouter } from "uploadthing/fastify";
+import { UTApi } from "uploadthing/server";
 
 const f = createUploadthing();
 
@@ -9,3 +10,5 @@ export const uploadRouter = {
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof uploadRouter;
+
+export const utapi = new UTApi({});

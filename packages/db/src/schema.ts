@@ -7,6 +7,7 @@ export const users = sqliteTable("users", {
   chatId: int("chat_id").notNull().unique(),
   fullName: text("full_name"),
   profile: text("profile"),
+  imageKey: text("image_key"),
   verificationStatus: text("verification_status", {
     enum: ["unverified", "pending", "verified", "rejected"],
   })

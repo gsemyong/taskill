@@ -1,7 +1,8 @@
 import forms from "@tailwindcss/forms";
+import { withUt } from "uploadthing/tw";
 
 /** @type {import('tailwindcss').Config} */
-export default {
+export default withUt({
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -17,4 +18,4 @@ export default {
     },
   },
   plugins: [forms],
-};
+});

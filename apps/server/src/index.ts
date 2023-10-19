@@ -53,6 +53,9 @@ await server.register(cors, {
 
 await server.register(fastifyUploadthingPlugin, {
   router: uploadRouter,
+  config: {
+    callbackUrl: "http://localhost:1337/api/uploadthing",
+  },
 });
 
 await server.register(fastifyTRPCPlugin, {

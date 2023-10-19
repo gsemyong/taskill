@@ -1,99 +1,132 @@
-import MainLayout from "@/components/main-layout";
 import { useBackButton } from "@/hooks/use-back-button";
 import { useMainButton } from "@/hooks/use-main-button";
 import { trpc } from "@/lib/trpc";
 import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "@/routes";
-// import { useTypedSearchParams } from "react-router-typesafe-routes/dom";
-import { generateComponents } from "@uploadthing/react";
-import { type OurFileRouter } from "file-uploads";
-
-const { UploadButton } = generateComponents<OurFileRouter>();
+import Loading from "@/components/loading";
+import { useUploadThing } from "@/lib/uploadthing";
 
 export const Onboarding = () => {
-  // const [{ verificationStatus }] = useTypedSearchParams(
-  //   ROUTES.TASKER.ONBOARDING,
-  // );
+  const userQuery = trpc.users.user.useQuery();
 
-  const navigate = useNavigate();
+  const { permittedFileInfo, startUpload } = useUploadThing(
+    "verificationDocument",
+    {},
+  );
+  const fileTypes = permittedFileInfo?.config
+    ? Object.keys(permittedFileInfo?.config)
+    : [];
+
   useBackButton({
     show: false,
   });
 
   useMainButton({
-    show: true,
-    onClick() {
-      if (fullName.length === 0 || profile.length === 0) {
+    show: userQuery.data?.user.verificationStatus === "unverified",
+    async onClick() {
+      if (
+        fullName.length === 0 ||
+        profile.length === 0 ||
+        !verificationDocument
+      ) {
         WebApp.showAlert("Please fill all the fields");
       } else {
-        setTaskerInfoMutation.mutate({ fullName, profile });
+        const res = await startUpload([verificationDocument]);
+
+        if (!res || res.length === 0) {
+          WebApp.showAlert("Something went wrong");
+          return;
+        }
+
+        const imageKey = res[0].name;
+        sendTaskerInfoForVerificationMutation.mutate({
+          fullName,
+          profile,
+          imageKey,
+        });
       }
     },
     text: "Finish setup",
   });
 
   const utils = trpc.useContext();
-  const setTaskerInfoMutation = trpc.users.setTaskerInfo.useMutation({
-    onSuccess: () => {
-      utils.users.user.invalidate();
-      navigate(ROUTES.TASKER.MENU.path, {
-        replace: true,
-      });
-    },
-  });
+  const sendTaskerInfoForVerificationMutation =
+    trpc.users.sendTaskerInfoForVerification.useMutation({
+      onSuccess: () => {
+        utils.users.user.invalidate();
+      },
+    });
 
   const [fullName, setFullName] = useState("");
   const [profile, setProfile] = useState("");
+  const [verificationDocument, setVerificationDocument] = useState<File>();
 
-  return (
-    <MainLayout header="Getting started" subHeader="Finish your profile setup">
-      <div className="space-y-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="fullName" className="text-hint">
-            Full name
-          </label>
-          <input
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            id="fullName"
-            name="fullName"
-            placeholder="Your full name as in governmental ID."
-            className="rounded-md border-none bg-background focus:ring-primary"
-          />
+  if (userQuery.isLoading) {
+    return <Loading />;
+  }
+
+  if (!userQuery.data) {
+    return null;
+  }
+
+  if (userQuery.data.user.verificationStatus === "pending") {
+    return <div className="p-4 text-hint">Your data is being verified</div>;
+  }
+
+  if (userQuery.data.user.verificationStatus === "unverified") {
+    return (
+      <div className="p-4">
+        <div className="mb-4 text-xl font-semibold">Verify your profile</div>
+        <div className="space-y-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="fullName" className="text-hint">
+              Full name
+            </label>
+            <input
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              id="fullName"
+              name="fullName"
+              placeholder="Your full name as in governmental ID."
+              className="rounded-md border-none bg-background focus:ring-primary"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="profile" className="text-hint">
+              Profile
+            </label>
+            <textarea
+              value={profile}
+              onChange={(e) => setProfile(e.target.value)}
+              id="profile"
+              name="profile"
+              rows={6}
+              placeholder="Write about your skills, experience and other details that will help you get more tasks."
+              className="rounded-md border-none bg-background focus:ring-primary"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="verificationDocument" className="text-hint">
+              Verification document
+            </label>
+            <input
+              className="cursor-pointer file:rounded-md file:border-none file:bg-primary file:px-4 file:py-2 file:text-primary-foreground file:shadow-none"
+              type="file"
+              id="verificationDocument"
+              name="verificationDocument"
+              accept={fileTypes.join(", ")}
+              onChange={(e) => {
+                if (!e.target.files || e.target.files.length === 0) {
+                  setVerificationDocument(undefined);
+                } else {
+                  const file = e.target.files[0];
+                  setVerificationDocument(file);
+                }
+              }}
+            />
+          </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="description" className="text-hint">
-            Profile
-          </label>
-          <textarea
-            value={profile}
-            onChange={(e) => setProfile(e.target.value)}
-            id="profile"
-            name="profile"
-            rows={6}
-            placeholder="Write about your skills, experience and other details that will help you get more tasks."
-            className="rounded-md border-none bg-background focus:ring-primary"
-          />
-        </div>
-        <UploadButton
-          endpoint="verificationDocument"
-          onClientUploadComplete={(res) => {
-            // Do something with the response
-            console.log("Files: ", res);
-            alert("Upload Completed");
-          }}
-          onUploadError={(error: Error) => {
-            // Do something with the error.
-            alert(`ERROR! ${error.message}`);
-          }}
-          onUploadBegin={(name) => {
-            // Do something once upload begins
-            console.log("Uploading: ", name);
-          }}
-        />
       </div>
-    </MainLayout>
-  );
+    );
+  }
 };

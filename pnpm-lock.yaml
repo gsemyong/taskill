@@ -111,6 +111,9 @@ importers:
       trpc:
         specifier: workspace:*
         version: link:../../packages/trpc
+      uploadthing:
+        specifier: ^5.7.1
+        version: 5.7.1(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -291,6 +294,12 @@ importers:
       api:
         specifier: workspace:*
         version: link:../api
+      db:
+        specifier: workspace:*
+        version: link:../db
+      file-uploads:
+        specifier: workspace:*
+        version: link:../file-uploads
       grammy:
         specifier: ^1.19.0
         version: 1.19.2

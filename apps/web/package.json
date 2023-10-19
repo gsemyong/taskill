@@ -26,6 +26,7 @@
     "react-router-typesafe-routes": "^1.2.1",
     "tailwind-merge": "^1.14.0",
     "trpc": "workspace:*",
+    "uploadthing": "^5.7.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
