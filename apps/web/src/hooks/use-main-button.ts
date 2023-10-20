@@ -1,45 +1,37 @@
 import { WebApp } from "@grammyjs/web-app";
 import { useEffect } from "react";
-import colors from "tailwindcss/colors";
+import { orange } from "@radix-ui/colors";
 
 export function useMainButton({
   show,
   onClick,
   text,
-  danger,
-  progress,
+  color,
 }:
   | {
       show: true;
       text: string;
       onClick: () => void;
-      danger?: boolean;
-      progress?: boolean;
+      color?: string;
     }
   | {
       show: false;
       text?: string;
       onClick?: () => void;
-      danger?: boolean;
-      progress?: boolean;
+      color?: string;
     }) {
   useEffect(() => {
     if (show) {
       WebApp.MainButton.setText(text);
       WebApp.MainButton.onClick(onClick);
-      if (danger) {
+      if (color) {
         WebApp.MainButton.setParams({
-          color: colors.rose["500"],
+          color,
         });
       } else {
         WebApp.MainButton.setParams({
-          color: WebApp.themeParams.button_color,
+          color: orange.orange10,
         });
-      }
-      if (progress) {
-        WebApp.MainButton.showProgress();
-      } else {
-        WebApp.MainButton.hideProgress();
       }
       WebApp.MainButton.show();
     } else {
@@ -51,5 +43,5 @@ export function useMainButton({
         WebApp.MainButton.offClick(onClick);
       }
     };
-  }, [danger, progress, onClick, show, text]);
+  }, [color, onClick, show, text]);
 }

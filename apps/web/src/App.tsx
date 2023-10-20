@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import { WebApp } from "@grammyjs/web-app";
 import { trpc } from "@/lib/trpc";
 import { router } from "@/routes";
+import { Theme } from "@radix-ui/themes";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -24,7 +25,14 @@ const App = () => {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <Theme
+          appearance={WebApp.colorScheme}
+          grayColor="mauve"
+          accentColor="orange"
+          scaling={"110%"}
+        >
+          <RouterProvider router={router} />
+        </Theme>
       </QueryClientProvider>
     </trpc.Provider>
   );

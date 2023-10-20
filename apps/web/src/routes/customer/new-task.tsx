@@ -5,6 +5,7 @@ import { WebApp } from "@grammyjs/web-app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/routes";
+import { TextArea } from "@radix-ui/themes";
 
 export const NewTask = () => {
   const navigate = useNavigate();
@@ -34,8 +35,7 @@ export const NewTask = () => {
         addTaskMutation.mutate({ description });
       }
     },
-    text: "Post new task",
-    progress: addTaskMutation.isLoading,
+    text: "Post this task",
   });
 
   const [description, setDescription] = useState("");
@@ -46,14 +46,15 @@ export const NewTask = () => {
         <label htmlFor="description" className="text-hint">
           Description
         </label>
-        <textarea
+        <TextArea
+          size={"3"}
+          color="orange"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           id="description"
           name="description"
           rows={6}
           placeholder="Delails about the task. You can specify the location, urgency and other details here."
-          className="rounded-md border-none bg-background focus:ring-primary"
         />
       </div>
     </div>
